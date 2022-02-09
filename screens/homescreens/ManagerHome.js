@@ -10,32 +10,32 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
-import * as Location from 'expo-location';
+// import * as Location from 'expo-location';
 
 
 export default function ManagerHome( {route , navigation}) {
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  // const [location, setLocation] = useState(null);
+  // const [errorMsg, setErrorMsg] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
+  // useEffect(() => {
+  //   (async () => {
+  //     let { status } = await Location.requestForegroundPermissionsAsync();
+  //     if (status !== 'granted') {
+  //       setErrorMsg('Permission to access location was denied');
+  //       return;
+  //     }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
-  }, []);
+  //     let location = await Location.getCurrentPositionAsync({});
+  //     setLocation(location);
+  //   })();
+  // }, []);
 
-  let text = 'Waiting..';
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
+  // let text = 'Waiting..';
+  // if (errorMsg) {
+  //   text = errorMsg;
+  // } else if (location) {
+  //   text = JSON.stringify(location);
+  // }
 
   return (
     <View style={styles.container}>
@@ -43,7 +43,6 @@ export default function ManagerHome( {route , navigation}) {
 
       <StatusBar style="auto" />
       <View style={styles.inputView}>
-      {console.log(route.params.token)}
       <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('FastListarOS', {token: route.params.token})}}>
       <Text style={[{color: 'white'}]}>Ordens de Servicos</Text>
         </TouchableOpacity>
@@ -71,7 +70,6 @@ export default function ManagerHome( {route , navigation}) {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
-      <Text>{text}</Text>
     </View>
     </View>
   );
@@ -94,7 +92,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: "70%",
     height: 45,
-    marginBottom: 20,
+    marginTop: 20,
 
     alignItems: "center",
   },

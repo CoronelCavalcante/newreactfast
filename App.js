@@ -13,6 +13,7 @@ import OsDist from './screens/Distribuir/OsDist';
 import ModalDist from './screens/detalhes/ModalDist';
 import DetalhesDist from './screens/Distribuir/DetalhesDist';
 import DetalhesEmp from './screens/Employees/DetalhesEmp';
+import allMyOsModal from './screens/OrdensServico/allMyOSModal'
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,7 @@ function App() {
             <Stack.Screen name= "ModalDist" component={ModalDist} options={{title: 'Escolha um funcionario para distribuir a ordem'}} screenOptions={{presetation:'modal'}} />
             <Stack.Screen name= "DetalhesDist" component={DetalhesDist} options={{title: 'Ordem de Servico'}} screenOptions={{presetation:'modal'}} />
             <Stack.Screen name= "DetalhesEmp" component={DetalhesEmp} options={{title: 'Detalhes do funcionario'}} screenOptions={{presetation:'modal'}} />
+            <Stack.Screen name= "allMyOsModal" component={allMyOsModal} options={{title: 'Todas as Ordens ja distribuidas'}} screenOptions={{presetation:'modal'}} />
 
         </Stack.Navigator>    
     </NavigationContainer>

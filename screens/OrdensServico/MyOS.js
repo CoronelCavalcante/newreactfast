@@ -47,11 +47,13 @@ export default function MyOS({route , navigation} ) {
               {'\n'}
               {obj.ordem_servico.mensagem}
               {'\n'}
-              Atribuida por:  
-              {obj.givem_by}
+              Atribuida por:  {obj.givem_by}
               {'\n'}
               Status da ordem pelo IXC:
               {obj.ordem_servico.status}
+              {'\n'}
+              TA COMPLETED? {obj.completed.toString()}
+              
                                                         
             </Text>
          </TouchableOpacity>
@@ -69,17 +71,19 @@ export default function MyOS({route , navigation} ) {
                     
                     <> 
                      <View>
-                         <Text style={styles.topo}>Ordem de Servicos abertas: {OS.length}</Text>
+                         <Text style={styles.topo}>Ordem de Servicos:</Text>
+                         <Button onPress={() => navigation.navigate('allMyOsModal',{OS: OS, token: route.params.token })} title="Ver tambem distribuição concluida"/>
       
                          <FlatList
                         data={OS}
                         renderItem={({item, index})=>
-                        Listar(item, index)
+                        item.completed ? (console.log("")) : 
+                        (Listar(item, index))
                 
                             }
               
                         />
-                         
+                        
                      </View>
                      
                 </>

@@ -3,9 +3,13 @@
     "name": "fastreactup",
     "slug": "fastreactup",
     "version": "1.0.0",
+    "icon": "./assets/up-logo-953x953.png",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "com.uptecnologia.ordemservico"
+    }
   },
-  "name": "fastreactup"
+  "name": "Uptecnologia-Ordens-Alpha"
 }

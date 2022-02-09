@@ -29,28 +29,28 @@ export default function DetalhesEmp({route , navigation}){
       headers: myHeaders,
       redirect: 'follow'
     };
-
+//a navegação e alerta de ter deletao tao indo sozinhos mesmo sem esses 2 .then acho q nao precisa resolver
     fetch("http://168.195.212.5:8000/users/"+route.params.obj.id, requestOptions)
-      .then(response => response.text())
-      .then(result => Alert.alert(result))
-      .then(navigation.goBack())
-      .catch(error => console.log('error', error));
+    .then(response => {response.text(),console.log(response.status) ,Alert.alert("resposta", response.status == 204 ? ("Usuario Deletado com sucesso"):(response.status==404? ("Nao encontrado"): ("Erro inesperado ao tentar deletar usuario")))})
+    .then(navigation.goBack())
+    .catch(error => console.log('error', error));
   };
 
-  const [isLoading, setLoading] = useState(true);
-  const [OS, setOS] = useState([]);
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
-  var requestOptions = {
-  method: 'GET',
-  headers: myHeaders,
-  redirect: 'follow'
-  };
-  useEffect(() => {fetch("http://168.195.212.5:8000/OS/emp/"+route.params.obj.id.toString(), requestOptions)
-  .then(response => response.json())
-  .then(result => setOS(result))
-  .then(OS.length!=0 ? (setLoading(false)) : (console.log("is loading ta como: ",isLoading)))
-  .catch(error => console.log('error', error));})
+    const [isLoading, setLoading] = useState(true);
+    const [OS, setOS] = useState([]);
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
+    var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+    };
+    
+    useEffect(() => {fetch("http://168.195.212.5:8000/OS/emp/"+route.params.obj.id.toString(), requestOptions)
+    .then(response => response.json())
+    .then(result => setOS(result))
+    .then(OS.length!=0 ? (setLoading(false)) : (console.log("is loading ta como: ",isLoading)))
+    .catch(error => console.log('error', error));})
 
 
 
@@ -86,7 +86,10 @@ export default function DetalhesEmp({route , navigation}){
                         <Text>id: {route.params.obj.id}</Text>
                         <Text>manager: {manager}</Text>
                         <Text>criado em: {route.params.obj.created_at}</Text>
+                        
                         <Button 
+                        color="#d12e2e"
+                        title="Deletar Funcionario"
                         onPress={()=> Alert.alert(
                           "Deletar funcionario?",
                           "Voce tocou no funcionario "+route.params.obj.email+" tem certeza que quer delta-lo?",                          
@@ -98,12 +101,13 @@ export default function DetalhesEmp({route , navigation}){
                           ]
 
                         )}
-                        title="Deletar Funcionario"/>
-
+                        />
+                        <Text>Ordens abertas desse funcionario</Text>
                         <FlatList
                         data={OS}
                         renderItem={({item, index})=>
-                        Listar(item, index)
+                        item.completed ? (console.log("")) : (
+                        Listar(item, index))
                 
                             }
                 
@@ -149,7 +153,14 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 18
 
-  },
+  }, 
+
+  button: {
+    color: '#d12e2e',
+    borderColor: 'red',
+    borderWidth: 5,
+    borderRadius: 15       
+ },
 
 
 

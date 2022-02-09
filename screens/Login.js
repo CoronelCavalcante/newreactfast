@@ -43,9 +43,7 @@ export default function Login({ navigation }) {
 
     // <Image style={styles.image} source={require("./assets/log2.png")} />
   return (
-    <View style={styles.container}>
-     
-
+    <View style={styles.container}> 
       <StatusBar style="auto" />
       <View style={styles.inputView}>
         <TextInput
