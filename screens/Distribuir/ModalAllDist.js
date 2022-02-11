@@ -14,40 +14,25 @@ import {
 
 
 
-export default function OsDist({route , navigation} ) {
-
-    const [isLoading, setLoading] = useState(true);
-    const [OS, setOS] = useState([]);
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
-    var requestOptions = {
-    method: 'GET',
-    headers: myHeaders,
-    redirect: 'follow'
-    };
-
-    useEffect(() => {fetch("http://168.195.212.5:8000/OS/Dist", requestOptions)
-    .then(response => response.json())
-    .then(result => setOS(result))
-    .then(OS.length>0 ? (setLoading(false)) : (console.log("is loading ta como: ",isLoading)))
-    .catch(error => console.log('error', error));})
-
-
+export default function ModalAllDist({route , navigation} ) {
 
 
       function Listar(obj) {
         return(          
-          <TouchableOpacity onPress={() => navigation.navigate('DetalhesDist',{obj: obj, token: route.params.token })}>
+          <TouchableOpacity onPress={() => {navigation.navigate('ModalOS',{obj: obj, token: route.params.token }), title="Ver tambem ordens concluidas"}}>
             <Text style={styles.cell}>   
-              <Text style={{fontWeight: 'bold'}}>ID Ordem: </Text> {obj.ordem_servico.id}
+              <Text style={{fontWeight: 'bold'}}>ID da Ordem: {obj.ordem_servico.id} </Text> 
               {'\n'}
-              email funcionario: {obj.employee.email}
+              ID Cliente: {obj.cliente.id}
               {'\n'}
-              nome cliente: {obj.cliente.razao}
-              {'\n'}              
-              email manager: {obj.poster.email}
+              Razao social: {obj.cliente.razao}
               {'\n'}
-              distribuida em: {obj.distribuida.created_at}
+              {obj.ordem_servico.mensagem}
+              {'\n'}
+              Atribuida por:  {obj.givem_by}
+              {'\n'}
+              Status da ordem pelo IXC:
+              {obj.ordem_servico.status}
                                                         
             </Text>
          </TouchableOpacity>
@@ -59,20 +44,17 @@ export default function OsDist({route , navigation} ) {
 
 
   return (
-    <View style={styles.container}>
-         {isLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
-                (
+    <View style={styles.container}> 
+                
                     
                     <> 
-
                      <View>
-                         <Text style={styles.topo}>Ordem de Servicos Distribuidas Não Concluidas: {'\n'}</Text>
-                         <Button style={styles.loginBtn} onPress={() => navigation.navigate('ModalAllDist',{OS: OS, token: route.params.token })} title="Ver Ordens concluidas"/>
-
+                         <Text style={styles.topo}>Total de ordens de servico distribuidas: {route.params.OS.length}</Text>
+      
                          <FlatList
-                        data={OS}
+                        data={route.params.OS}
                         renderItem={({item, index})=>
-                        item.completed ? (console.log("")) : ( Listar(item, index))
+                        Listar(item, index)
                 
                             }
               
@@ -82,7 +64,6 @@ export default function OsDist({route , navigation} ) {
                      
                 </>
                 
-                )}
 
     </View>
   );
@@ -115,7 +96,7 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     color: 'black',
-    fontSize: 16
+    fontSize: 18
 
   },
 
@@ -139,8 +120,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: 40,
     backgroundColor: "#1676DD",
   },
   lista:{

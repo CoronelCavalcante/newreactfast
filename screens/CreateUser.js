@@ -73,8 +73,8 @@ export default function CreateUser( {route , navigation}) {
       </View>
 
 
-      <View style={styles.container}>
-          <Text>Esse usuario é gerente?</Text>
+      
+          <Text>Esse Funcionario é gerente?</Text>
       <Switch
         trackColor={{ false: "#767577", true: "#81b0ff" }}
         thumbColor={isEnabled ? "#f5dd4b" : "#f4,f3f4"}
@@ -82,10 +82,10 @@ export default function CreateUser( {route , navigation}) {
         onValueChange={toggleSwitch}
         value={isEnabled}
       />
-    </View>
+    
 
       <TouchableOpacity style={styles.loginBtn} onPress={()=>{criar()}}>
-        <Text style={[{color: 'white'}]}>criar</Text>
+        <Text style={[{color: 'white', fontSize: 18}]}>CRIAR</Text>
       </TouchableOpacity>
     </View>
   );
@@ -93,6 +93,7 @@ export default function CreateUser( {route , navigation}) {
 
 const styles = StyleSheet.create({
   container: {
+    
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
@@ -104,6 +105,7 @@ const styles = StyleSheet.create({
   },
 
   inputView: {
+    
     backgroundColor: "#1676DD",
     borderRadius: 30,
     width: "70%",

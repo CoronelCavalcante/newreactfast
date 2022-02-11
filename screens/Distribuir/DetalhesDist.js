@@ -23,8 +23,9 @@ export default function DetalhesDist({route , navigation}){
   var poster = route.params.obj.poster
   var employee = route.params.obj.employee
   var horario = 'fail switch'
-  console.log(ordem.endereco)
-  console.log(ordem.latitude, "E ", ordem.longitude)
+  var assunto = route.params.obj.assunto
+  var contrato = route.params.obj.contrato
+
   switch(ordem.melhor_horario_agenda){
     case "Q":
       horario = 'Qualquer';
@@ -61,31 +62,33 @@ export default function DetalhesDist({route , navigation}){
     return(
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>
-          ESSA ORDEM FOI ENTREGUE EM : {distribuida.created_at}
+          Essa ordem foi distribuida em: {distribuida.created_at}
           {'\n'}
-          POR: {poster.email}
+          Por: {poster.email}
           {'\n'}
-          PARA: {employee.email}
+          Para: {employee.email}
           {'\n'}
-          {cliente.id} {cliente.razao}
           {'\n'}
-          endereco: {ordem.endereco}
+          {cliente.razao} {cliente.id}
+          {'\n'}
+          Endereço: {ordem.endereco}
           {'\n'}
           fone: {cliente.fone} - {cliente.telefone_comercial} - {cliente.celular}
           {'\n'}
-          ID assunto: {ordem.id_assunto}
+          Assunto: {assunto.assunto}
+          {'\n'}
+          Melhor Horario: {horario}
+          {'\n'}
           {'\n'}
           {ordem.mensagem}
           {'\n'}
-          melhor horario: {horario}
-          {'\n'}
-          {'\n'}
-          A fazer parte de Atendimento concluido AAAA
-          {'\n'}
           {'\n'}
           Dados tecnicos:
-          Hardware: {login.id_hardware}
           {'\n'}
+          {'\n'}
+          Bloqueio Automatico: {contrato.bloqueio_automatico}
+          {'\n'}
+          
           tipo_conexao: {login.tipo_conexao}
           {'\n'}
           tipo_equipamento: {login.tipo_equipamento}
@@ -99,21 +102,13 @@ export default function DetalhesDist({route , navigation}){
           sinal: {login.sinal_ultimo_atendimento}
           {'\n'}
           {'\n'}
-          A fazer parte de CONTRATO para pegar STATUS 
-          {'\n'}
-          {'\n'}
-          A fazer achar antena.....
-          {'\n'}
-          {'\n'}
+        
           senha r1: {login.senha_router1}
           {'\n'}
           Endereço ip: {login.ip}
           {'\n'}
           Endereço Mac: {login.mac}
-          {'\n'}{'\n'}
-          A FAZER DETALHES E OBSERVAÇÕES
-          {'\n'}{'\n'}
-          A fazer metodo de conclusao de OS  
+          {'\n'}
           {'\n'}{'\n'}
           {distribuir()}                {abrirNoMaps()}   
           

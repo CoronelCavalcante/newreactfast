@@ -17,13 +17,16 @@ import openMap from "react-native-open-maps";
 
 
 //supostamente nao tem problema se o cliente nao tem login mas ainda falta teste
+//deixando assunto e contrato como array por enquanto.
+
 export default function ModalOS({route , navigation}){
   var cliente = route.params.obj.cliente
   var ordem = route.params.obj.ordem_servico
   var login = route.params.obj.login
+  var assunto = route.params.obj.assunto
+  var contrato = route.params.obj.contrato
   var horario = 'fail switch'
-  console.log(ordem.endereco)
-  console.log(ordem.latitude, "E ", ordem.longitude)
+ 
   switch(ordem.melhor_horario_agenda){
     case "Q":
       horario = 'Qualquer';
@@ -44,7 +47,7 @@ export default function ModalOS({route , navigation}){
     return(
        <Button 
     onPress={()=> openMap({query: ordem.endereco})}
-    title="Click To Open Maps"/>
+    title="Endereço no Maps"/>
     )
     
   }
@@ -60,24 +63,21 @@ export default function ModalOS({route , navigation}){
     return(
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>
-          {cliente.id} {cliente.razao}
+          {cliente.razao}    ID: {cliente.id} 
           {'\n'}
-          endereco: {ordem.endereco}
+          Endereço: {ordem.endereco}
           {'\n'}
           fone: {cliente.fone} - {cliente.telefone_comercial} - {cliente.celular}
           {'\n'}
-          ID assunto: {ordem.id_assunto}
+          Assunto: {assunto.assunto}
+          {'\n'}
+          Melhor Horario: {horario}
+          {'\n'}
           {'\n'}
           {ordem.mensagem}
           {'\n'}
-          melhor horario: {horario}
-          {'\n'}
-          {'\n'}
-          A fazer parte de Atendimento concluido
-          {'\n'}
           {'\n'}
           Dados tecnicos:
-          Hardware: {login.id_hardware}
           {'\n'}
           tipo_conexao: {login.tipo_conexao}
           {'\n'}
@@ -87,15 +87,12 @@ export default function ModalOS({route , navigation}){
           {'\n'}
           interface transmissao fibra: {login.interface_transmissao_fibra}
           {'\n'}
-          usuario: {login.usuario_router}
+          usuario: {login.usuario_router}0,
           {'\n'}
           sinal: {login.sinal_ultimo_atendimento}
           {'\n'}
           {'\n'}
-          A fazer parte de CONTRATO para pegar STATUS 
-          {'\n'}
-          {'\n'}
-          A fazer achar antena.....
+          Bloquerio Automatico: {contrato.bloqueio_automatico}
           {'\n'}
           {'\n'}
           senha r1: {login.senha_router1}
@@ -103,10 +100,6 @@ export default function ModalOS({route , navigation}){
           Endereço ip: {login.ip}
           {'\n'}
           Endereço Mac: {login.mac}
-          {'\n'}{'\n'}
-          A FAZER DETALHES E OBSERVAÇÕES
-          {'\n'}{'\n'}
-          A fazer metodo de conclusao de OS  
           {'\n'}{'\n'}
           {distribuir()}                {abrirNoMaps()}   
           

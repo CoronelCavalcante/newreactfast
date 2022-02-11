@@ -66,13 +66,14 @@ export default function MyOS({route , navigation} ) {
 
   return (
     <View style={styles.container}>
-         {isLoading ? (<View><Text>Aguarde!</Text></View>) : 
+         {isLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
                 (
                     
                     <> 
                      <View>
                          <Text style={styles.topo}>Ordem de Servicos:</Text>
-                         <Button onPress={() => navigation.navigate('allMyOsModal',{OS: OS, token: route.params.token })} title="Ver tambem distribuição concluida"/>
+                         <Button onPress={() => navigation.navigate('AllMyOSModal',{OS: OS, token: route.params.token })} title="Ver Ordens concluidas"/>
+
       
                          <FlatList
                         data={OS}

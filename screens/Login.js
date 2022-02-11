@@ -8,6 +8,7 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 
 
@@ -35,16 +36,23 @@ export default function Login({ navigation }) {
         err.status = response.status
         throw err}
         return response.json()})
-    .then(result => result.manager ? ( navigation.navigate('ManagerHome', {token: result})) : (navigation.navigate('Homescreen', {token: result})))
-    .catch(error => console.log('error', error));
+    .then(result => result.manager ? ( console.log(Object.keys(result)) ,navigation.navigate('ManagerHome', {token: result})) : (navigation.navigate('Homescreen', {token: result})))
+    .catch(error => {error.status == 403 ? Alert.alert("Usuario ou Senha Incorreta") : (Alert.alert("Impossivel Conectar ao servidor")) });
     }
     
     
 
     // <Image style={styles.image} source={require("./assets/log2.png")} />
   return (
+    
     <View style={styles.container}> 
       <StatusBar style="auto" />
+      <Image
+        style={styles.image}
+        source={{
+          uri: 'https://uptecnologia.net.br/assets/images/up-logo-953x953.png',
+        }}
+      />
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
@@ -53,6 +61,7 @@ export default function Login({ navigation }) {
           onChangeText={(email) => setEmail(email)}
         />
       </View>
+      
 
       <View style={styles.inputView}>
         <TextInput
@@ -80,7 +89,10 @@ const styles = StyleSheet.create({
   },
 
   image: {
+    marginTop: -180,
     marginBottom: 40,
+    width: 70,
+    height: 65,
   },
 
   inputView: {

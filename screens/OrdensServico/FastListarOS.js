@@ -60,7 +60,7 @@ export default function FastListarOS({route , navigation} ) {
 
   return (
     <View style={styles.container}>
-         {isLoading ? (<View><Text>Aguarde!</Text></View>) : 
+         {isLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
                 (
                     
                     <> 

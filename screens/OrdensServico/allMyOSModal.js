@@ -14,12 +14,12 @@ import {
 
 
 
-export default function allMyOsModal({route , navigation} ) {
+export default function AllMyOSModal({route , navigation} ) {
 
 
       function Listar(obj) {
         return(          
-          <TouchableOpacity onPress={() => navigation.navigate('ModalOS',{obj: obj, token: route.params.token })}>
+          <TouchableOpacity onPress={() => {navigation.navigate('ModalOS',{obj: obj, token: route.params.token }), title="Ver tambem ordens concluidas"}}>
             <Text style={styles.cell}>   
               <Text style={{fontWeight: 'bold'}}>ID da Ordem: {obj.ordem_servico.id} </Text> 
               {'\n'}

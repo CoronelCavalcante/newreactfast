@@ -35,8 +35,8 @@ export default function ModalDist({route , navigation} ) {
 
     function alertar(obj){
         Alert.alert(
-            "Voce tocou no funcionario "+obj.email,
-            "A ordem que tem no route é "+route.params.obj.ordem_servico.id,
+            "Funcionario a receber ordem "+obj.email,
+            "Ordem a ser distribuida: "+route.params.obj.ordem_servico.id,
             [
                 {text: "Cancelar", onPress:()=>console.log("CANCELADO"),
                 style: "cancel"},

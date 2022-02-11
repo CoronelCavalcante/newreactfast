@@ -55,7 +55,7 @@ export default function ManagerHome( {route , navigation}) {
       </View>
       <View style={styles.inputView}>
       <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('CreateUser', {token: route.params.token})}}>
-      <Text style={[{color: 'white'}]}>Criar Usuario</Text>
+      <Text style={[{color: 'white'}]}>Novo Funcionario</Text>
         </TouchableOpacity>
       </View>
       
@@ -69,8 +69,6 @@ export default function ManagerHome( {route , navigation}) {
       <Text style={[{color: 'white'}]}>Lista de funcionarios</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.container}>
-    </View>
     </View>
   );
 }
