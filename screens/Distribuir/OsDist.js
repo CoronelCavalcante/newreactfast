@@ -11,6 +11,7 @@ import {
   FlatList,
   ActivityIndicator
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -18,6 +19,33 @@ export default function OsDist({route , navigation} ) {
 
     const [isLoading, setLoading] = useState(true);
     const [OS, setOS] = useState([]);
+
+    const [savedOS, setSavedOs] = useState([]);
+    const [savedLoading, setSavedLoading] = useState(true)
+
+    const storeData = async (value) => {
+      try {
+        const jsonValue = JSON.stringify(value)
+        await AsyncStorage.setItem('@dist', jsonValue)
+      } catch (e) {
+        console.log("Erro ao salver.",e)
+      }
+    }
+    const getData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('@dist')
+        if (jsonValue !== null) {
+          setSavedOs(JSON.parse(jsonValue))
+          return(setSavedLoading(false))
+        }
+        else{
+          return(console.log('nodata'))
+        }
+        ;
+      } catch(e) {
+        console.log("ERROR NO GET DATA: ",e)
+      }
+    }
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
     var requestOptions = {
@@ -28,7 +56,7 @@ export default function OsDist({route , navigation} ) {
 
     useEffect(() => {fetch("http://168.195.212.5:8000/OS/Dist", requestOptions)
     .then(response => response.json())
-    .then(result => setOS(result))
+    .then(result => {setOS(result), storeData(result)})
     .then(OS.length>0 ? (setLoading(false)) : (console.log("is loading ta como: ",isLoading)))
     .catch(error => console.log('error', error));})
 
@@ -55,7 +83,7 @@ export default function OsDist({route , navigation} ) {
     
         }
         ;
-
+        getData();
 
 
   return (

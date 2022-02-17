@@ -11,6 +11,8 @@ import {
   FlatList,
   ActivityIndicator
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 
@@ -20,6 +22,55 @@ export default function FastListarOS({route , navigation} ) {
 
     const [isLoading, setLoading] = useState(true);
     const [OS, setOS] = useState([]);
+    const [savedOS, setSavedOs] = useState([]);
+    const [savedLoading, setSavedLoading] = useState(true)
+
+    const storeData = async (value) => {
+      try {
+        const jsonValue = JSON.stringify(value)
+        await AsyncStorage.setItem('@abertas', jsonValue)
+      } catch (e) {
+        console.log("Erro ao salver.",e)
+      }
+    }
+    const getData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('@abertas')
+        if (jsonValue !== null) {
+          setSavedOs(JSON.parse(jsonValue))
+          return(setSavedLoading(false))
+        }
+        else{
+          return(console.log('nodata'))
+        }
+        ;
+      } catch(e) {
+        console.log("ERROR NO GET DATA: ",e)
+      }
+    }
+    // const getData = async () => {
+    //   try {
+    //     const jsonValue = await AsyncStorage.getItem('@abertas')
+    //     return jsonValue != null ? JSON.parse(jsonValue) : null;
+    //   } catch(e) {
+    //     // error reading value
+    //   }
+    // }
+    // // console.log(getSaved)
+    // async function save(key, value){
+    //   await SecureStore.setItemAsync(key, value)
+    // }
+
+    // async function getSaved(){
+    //   let result = await SecureStore.getItemAsync('Abertas');
+    //   if (result){
+    //     setSavedOs(result),
+    //     console.log(savedOS)
+    //   } else{
+    //     console.log("else do Abertas")
+    //   }
+    // }
+
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
     var requestOptions = {
@@ -29,7 +80,7 @@ export default function FastListarOS({route , navigation} ) {
     };
     useEffect(() => {fetch("http://168.195.212.5:8000/OS/Abertas", requestOptions)
     .then(response => response.json())
-    .then(result => setOS(result))
+    .then(result => {setOS(result), storeData(result)})
     .then(OS.length>0 ? (setLoading(false)) : (console.log("is loading ta como: ",isLoading)))
     .catch(error => console.log('error', error));})
 
@@ -51,16 +102,32 @@ export default function FastListarOS({route , navigation} ) {
                                                         
             </Text>
          </TouchableOpacity>
+
             );
     
         }
         ;
 
 
+        getData();
 
   return (
     <View style={styles.container}>
-         {isLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
+         {isLoading ? (savedLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>): ( <> 
+                     <View>
+                         <Text style={styles.topo}>Ordem de Servicos ja salvas: {savedOS.length}</Text>
+                         <FlatList
+                        data={savedOS}
+                        renderItem={({item, index})=>
+                        Listar(item, index)
+                
+                            }
+              
+                        />
+                         
+                     </View>
+              
+                </>)) : 
                 (
                     
                     <> 
@@ -76,7 +143,7 @@ export default function FastListarOS({route , navigation} ) {
                         />
                          
                      </View>
-                     
+              
                 </>
                 
                 )}

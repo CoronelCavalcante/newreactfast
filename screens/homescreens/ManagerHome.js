@@ -42,6 +42,16 @@ export default function ManagerHome( {route , navigation}) {
      
 
       <StatusBar style="auto" />
+
+
+
+      <View>
+      
+      <Text style={styles.topo}>Logado como: {route.params.user}</Text>  
+      </View>
+
+
+     
       <View style={styles.inputView}>
       <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('FastListarOS', {token: route.params.token})}}>
       <Text style={[{color: 'white'}]}>Ordens de Servicos</Text>
@@ -116,5 +126,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 40,
     backgroundColor: "#1676DD",
+  },
+  topo: {
+    height: 100,
+    padding: 1,
+    color: 'black',
+    fontSize: 18
+
   },
 });

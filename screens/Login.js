@@ -10,14 +10,46 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import * as SecureStore from 'expo-secure-store';
 
 
 
 export default function Login({ navigation }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [savedEmail, setSavedEmail] = useState("");
+    const [savedPassword, setSavedPassword] = useState("");
+    getEmail();
+    getPassword();
+    savedEmail && savedPassword !== "" ? (logar(savedEmail,savedPassword)) : (console.log("else do savedEmail de "));
+    //mais facil de resolver isso é la na tela principal mesmo colocar pra chegar se tem saved email e password se tiver ja mandar pra um saved logar
 
-    function logar(){
+
+    async function save(key, value){
+      await SecureStore.setItemAsync(key, value)
+    }
+
+    async function getEmail(){
+      let result = await SecureStore.getItemAsync('email');
+      if (result){
+        setSavedEmail(result)
+      } else{
+        console.log("else do getEmail")
+      }
+    }
+    async function getPassword(){
+      let result = await SecureStore.getItemAsync('password');
+      if (result){
+        setSavedPassword(result)
+      } else{
+        console.log("else do getPassword")
+      }
+    }
+
+
+
+
+    function logar(email, password){
         var formdata = new FormData();
     formdata.append("username", email);
     formdata.append("password", password);
@@ -36,7 +68,7 @@ export default function Login({ navigation }) {
         err.status = response.status
         throw err}
         return response.json()})
-    .then(result => result.manager ? ( console.log(Object.keys(result)) ,navigation.navigate('ManagerHome', {token: result})) : (navigation.navigate('Homescreen', {token: result})))
+    .then(result => result.manager ? ( save("email", email),save("password", password) ,navigation.navigate('ManagerHome', {token: result, user: email})) : (navigation.navigate('Homescreen', {token: result, user: email})))
     .catch(error => {error.status == 403 ? Alert.alert("Usuario ou Senha Incorreta") : (Alert.alert("Impossivel Conectar ao servidor")) });
     }
     
@@ -44,6 +76,7 @@ export default function Login({ navigation }) {
 
     // <Image style={styles.image} source={require("./assets/log2.png")} />
   return (
+  
     
     <View style={styles.container}> 
       <StatusBar style="auto" />
@@ -56,7 +89,7 @@ export default function Login({ navigation }) {
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="Email."
+          placeholder="Email"
           placeholderTextColor="#FFFFFF"
           onChangeText={(email) => setEmail(email)}
         />
@@ -73,7 +106,7 @@ export default function Login({ navigation }) {
         />
       </View>
 
-      <TouchableOpacity style={styles.loginBtn} onPress={()=>{logar()}}>
+      <TouchableOpacity style={styles.loginBtn} onPress={()=>{logar(email,password)}}>
         <Text style={[{color: 'white'}]}>LOGIN</Text>
       </TouchableOpacity>
     </View>

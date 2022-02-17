@@ -9,8 +9,9 @@ import {
   Button,
   TouchableOpacity,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -18,6 +19,32 @@ export default function MyOS({route , navigation} ) {
 
     const [isLoading, setLoading] = useState(true);
     const [OS, setOS] = useState([]);
+    const [savedLoading, setSavedLoading] = useState(true)
+    const [savedOS, setSavedOs] = useState([]);
+
+    const storeData = async (value) => {
+      try {
+        const jsonValue = JSON.stringify(value)
+        await AsyncStorage.setItem('@myos', jsonValue)
+      } catch (e) {
+        console.log("Erro ao salver.",e)
+      }
+    }
+    const getData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('@myos')
+        if (jsonValue !== null) {
+          setSavedOs(JSON.parse(jsonValue))
+          return(setSavedLoading(false))
+        }
+        else{
+          return(console.log('nodata'))
+        }
+        ;
+      } catch(e) {
+        console.log("ERROR NO GET DATA: ",e)
+      }
+    }
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
     var requestOptions = {
@@ -28,7 +55,7 @@ export default function MyOS({route , navigation} ) {
 
     useEffect(() => {fetch("http://168.195.212.5:8000/OS/My", requestOptions)
     .then(response => response.json())
-    .then(result => setOS(result))
+    .then(result =>  {setOS(result), storeData(result)})
     .then(OS.length>0 ? (setLoading(false)) : (console.log("is loading ta como: ",isLoading)))
     .catch(error => console.log('error', error));})
 
@@ -63,10 +90,25 @@ export default function MyOS({route , navigation} ) {
         ;
 
 
+        getData();
 
   return (
     <View style={styles.container}>
-         {isLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
+          {isLoading ? (savedLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>): ( <> 
+                     <View>
+                         <Text style={styles.topo}>Ordem de Servicos ja salvas: {savedOS.length}</Text>
+                         <FlatList
+                        data={savedOS}
+                        renderItem={({item, index})=>
+                        Listar(item, index)
+                
+                            }
+              
+                        />
+                         
+                     </View>
+              
+                </>)) : 
                 (
                     
                     <> 
