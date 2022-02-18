@@ -21,7 +21,7 @@ export default function Login({ navigation }) {
     const [savedPassword, setSavedPassword] = useState("");
     getEmail();
     getPassword();
-    savedEmail && savedPassword !== "" ? (logar(savedEmail,savedPassword)) : (console.log("else do savedEmail de "));
+    // savedEmail && savedPassword !== "" ? (logar(savedEmail,savedPassword)) : (console.log("else do savedEmail de "));
     //mais facil de resolver isso é la na tela principal mesmo colocar pra chegar se tem saved email e password se tiver ja mandar pra um saved logar
 
 

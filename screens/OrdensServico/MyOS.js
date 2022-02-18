@@ -25,14 +25,14 @@ export default function MyOS({route , navigation} ) {
     const storeData = async (value) => {
       try {
         const jsonValue = JSON.stringify(value)
-        await AsyncStorage.setItem('@myos', jsonValue)
+        await AsyncStorage.setItem('@myos'+route.params.user, jsonValue)
       } catch (e) {
         console.log("Erro ao salver.",e)
       }
     }
     const getData = async () => {
       try {
-        const jsonValue = await AsyncStorage.getItem('@myos')
+        const jsonValue = await AsyncStorage.getItem('@myos'+route.params.user)
         if (jsonValue !== null) {
           setSavedOs(JSON.parse(jsonValue))
           return(setSavedLoading(false))
@@ -90,7 +90,7 @@ export default function MyOS({route , navigation} ) {
         ;
 
 
-        getData();
+      getData();
 
   return (
     <View style={styles.container}>

@@ -61,7 +61,7 @@ export default function ListaEmp({route , navigation} ) {
 
   return (
     <View style={styles.container}>
-         {isLoading ? (<View><ActivityIndicator size={"large"}/></View>) : 
+         {isLoading ? (<View><Text>Aguarde</Text></View>) : 
                 (
                     
                     <> 

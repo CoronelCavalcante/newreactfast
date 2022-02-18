@@ -88,7 +88,21 @@ export default function OsDist({route , navigation} ) {
 
   return (
     <View style={styles.container}>
-         {isLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
+         {isLoading ? (savedLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>): ( <> 
+                     <View>
+                         <Text style={styles.topo}>Ordem distribuidas ja salvas: {savedOS.length}</Text>
+                         <FlatList
+                        data={savedOS}
+                        renderItem={({item, index})=>
+                        Listar(item, index)
+                
+                            }
+              
+                        />
+                         
+                     </View>
+              
+                </>)) : 
                 (
                     
                     <> 
