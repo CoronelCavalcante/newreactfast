@@ -80,8 +80,8 @@ export default function FastListarOS({route , navigation} ) {
     };
     useEffect(() => {fetch("http://168.195.212.5:8000/OS/Abertas", requestOptions)
     .then(response => response.json())
-    .then(result => {setOS(result), storeData(result)})
-    .then(OS.length>0 ? (setLoading(false)) : (console.log("is loading ta como: ",isLoading)))
+    .then(result => {setOS(result)})
+    .then(OS.length>0 ? (setLoading(false), storeData(OS)) : (console.log("is loading ta como: ",isLoading)))
     .catch(error => console.log('error', error));})
 
 
