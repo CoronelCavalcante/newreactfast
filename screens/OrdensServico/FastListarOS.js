@@ -9,7 +9,8 @@ import {
   Button,
   TouchableOpacity,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -33,21 +34,21 @@ export default function FastListarOS({route , navigation} ) {
         console.log("Erro ao salver.",e)
       }
     }
-    const getData = async () => {
-      try {
-        const jsonValue = await AsyncStorage.getItem('@abertas')
-        if (jsonValue !== null) {
-          setSavedOs(JSON.parse(jsonValue))
-          return(setSavedLoading(false))
-        }
-        else{
-          return(console.log('nodata'))
-        }
-        ;
-      } catch(e) {
-        console.log("ERROR NO GET DATA: ",e)
-      }
-    }
+    // const getData = async () => {
+    //   try {
+    //     const jsonValue = await AsyncStorage.getItem('@abertas')
+    //     if (jsonValue !== null) {
+    //       setSavedOs(JSON.parse(jsonValue))
+    //       return(setSavedLoading(false))
+    //     }
+    //     else{
+    //       return(console.log('nodata'))
+    //     }
+    //     ;
+    //   } catch(e) {
+    //     console.log("ERROR NO GET DATA: ",e)
+    //   }
+    // }
     // const getData = async () => {
     //   try {
     //     const jsonValue = await AsyncStorage.getItem('@abertas')
@@ -81,7 +82,7 @@ export default function FastListarOS({route , navigation} ) {
     useEffect(() => {fetch("http://168.195.212.5:8000/OS/Abertas", requestOptions)
     .then(response => response.json())
     .then(result => {setOS(result)})
-    .then(OS.length>0 ? (setLoading(false), storeData(OS)) : (console.log("is loading ta como: ",isLoading)))
+    .then(OS.length>0 ? (setLoading(false), storeData(OS)) : (console.log()))
     .catch(error => console.log('error', error));})
 
 
@@ -109,25 +110,10 @@ export default function FastListarOS({route , navigation} ) {
         ;
 
 
-        getData();
 
   return (
     <View style={styles.container}>
-         {isLoading ? (savedLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>): ( <> 
-                     <View>
-                         <Text style={styles.topo}>Ordem de Servicos ja salvas: {savedOS.length}</Text>
-                         <FlatList
-                        data={savedOS}
-                        renderItem={({item, index})=>
-                        Listar(item, index)
-                
-                            }
-              
-                        />
-                         
-                     </View>
-              
-                </>)) : 
+         {isLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
                 (
                     
                     <> 

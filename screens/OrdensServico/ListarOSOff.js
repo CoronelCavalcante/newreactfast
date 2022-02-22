@@ -10,54 +10,68 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Alert
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-export default function MyOS({route , navigation} ) {
 
-    const [isLoading, setLoading] = useState(true);
-    const [OS, setOS] = useState([]);
-    const [savedLoading, setSavedLoading] = useState(true)
+
+
+export default function ListarOsOff({route , navigation} ) {
+
+    
     const [savedOS, setSavedOs] = useState([]);
+    const [savedLoading, setSavedLoading] = useState(true)
 
-    const storeData = async (value) => {
+    // const storeData = async (value) => {
+    //   try {
+    //     const jsonValue = JSON.stringify(value)
+    //     await AsyncStorage.setItem('@abertas', jsonValue)
+    //   } catch (e) {
+    //     console.log("Erro ao salvar.",e)
+    //   }
+    // }
+    const getData = async () => {
       try {
-        const jsonValue = JSON.stringify(value)
-        await AsyncStorage.setItem('@myos'+route.params.user, jsonValue)
-      } catch (e) {
-        console.log("Erro ao salver.",e)
+        const jsonValue = await AsyncStorage.getItem('@abertas')
+        if (jsonValue !== null) {
+          setSavedOs(JSON.parse(jsonValue))
+          return(setSavedLoading(false))
+        }
+        else{
+          return(console.log('nodata'))
+        }
+        ;
+      } catch(e) {
+        console.log("ERROR NO GET DATA: ",e)
       }
     }
     // const getData = async () => {
     //   try {
-    //     const jsonValue = await AsyncStorage.getItem('@myos'+route.params.user)
-    //     if (jsonValue !== null) {
-    //       setSavedOs(JSON.parse(jsonValue))
-    //       return(setSavedLoading(false))
-    //     }
-    //     else{
-    //       return(console.log('nodata'))
-    //     }
-    //     ;
+    //     const jsonValue = await AsyncStorage.getItem('@abertas')
+    //     return jsonValue != null ? JSON.parse(jsonValue) : null;
     //   } catch(e) {
-    //     console.log("ERROR NO GET DATA: ",e)
+    //     // error reading value
     //   }
     // }
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
-    var requestOptions = {
-    method: 'GET',
-    headers: myHeaders,
-    redirect: 'follow'
-    };
+    // // console.log(getSaved)
+    // async function save(key, value){
+    //   await SecureStore.setItemAsync(key, value)
+    // }
 
-    useEffect(() => {fetch("http://168.195.212.5:8000/OS/My", requestOptions)
-    .then(response => response.json())
-    .then(result =>  {setOS(result), storeData(result)})
-    .then(OS.length>0 ? (setLoading(false)) : (console.log("is loading ta como: ",isLoading)))
-    .catch(error => console.log('error', error));})
+    // async function getSaved(){
+    //   let result = await SecureStore.getItemAsync('Abertas');
+    //   if (result){
+    //     setSavedOs(result),
+    //     console.log(savedOS)
+    //   } else{
+    //     console.log("else do Abertas")
+    //   }
+    // }
+
+
 
 
 
@@ -66,54 +80,45 @@ export default function MyOS({route , navigation} ) {
         return(          
           <TouchableOpacity onPress={() => navigation.navigate('ModalOS',{obj: obj, token: route.params.token })}>
             <Text style={styles.cell}>   
-              <Text style={{fontWeight: 'bold'}}>ID da Ordem: {obj.ordem_servico.id} </Text> 
+              <Text style={{fontWeight: 'bold'}}>ID da Ordem: </Text> {obj.ordem_servico.id}
               {'\n'}
-              ID Cliente: {obj.cliente.id}
+              data abertura: {obj.ordem_servico.data_abertura}
               {'\n'}
               Razao social: {obj.cliente.razao}
               {'\n'}
               {obj.ordem_servico.mensagem}
-              {'\n'}
-              Atribuida por:  {obj.givem_by}
-              {'\n'}
-              Status da ordem pelo IXC:
-              {obj.ordem_servico.status}
-              {'\n'}
-              TA COMPLETED? {obj.completed.toString()}
-              
+             
                                                         
             </Text>
          </TouchableOpacity>
+
             );
     
         }
         ;
 
 
+        getData();
 
   return (
     <View style={styles.container}>
-          {isLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
+         {savedLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
                 (
                     
                     <> 
                      <View>
-                         <Text style={styles.topo}>Ordem de Servicos:</Text>
-                         <Button onPress={() => navigation.navigate('AllMyOSModal',{OS: OS, token: route.params.token })} title="Ver Ordens concluidas"/>
-
-      
+                         <Text style={styles.topo}>Ordem de Servicos Ja Salvas: {savedOS.length}</Text>
                          <FlatList
-                        data={OS}
+                        data={savedOS}
                         renderItem={({item, index})=>
-                        item.completed ? (console.log("")) : 
-                        (Listar(item, index))
+                        Listar(item, index)
                 
                             }
               
                         />
-                        
+                         
                      </View>
-                     
+              
                 </>
                 
                 )}

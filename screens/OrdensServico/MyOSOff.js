@@ -15,49 +15,38 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
-export default function MyOS({route , navigation} ) {
+export default function MyOSOff({route , navigation} ) {
 
-    const [isLoading, setLoading] = useState(true);
-    const [OS, setOS] = useState([]);
+    // const [isLoading, setLoading] = useState(true);
+    // const [OS, setOS] = useState([]);
     const [savedLoading, setSavedLoading] = useState(true)
     const [savedOS, setSavedOs] = useState([]);
 
-    const storeData = async (value) => {
-      try {
-        const jsonValue = JSON.stringify(value)
-        await AsyncStorage.setItem('@myos'+route.params.user, jsonValue)
-      } catch (e) {
-        console.log("Erro ao salver.",e)
-      }
-    }
-    // const getData = async () => {
+    // const storeData = async (value) => {
     //   try {
-    //     const jsonValue = await AsyncStorage.getItem('@myos'+route.params.user)
-    //     if (jsonValue !== null) {
-    //       setSavedOs(JSON.parse(jsonValue))
-    //       return(setSavedLoading(false))
-    //     }
-    //     else{
-    //       return(console.log('nodata'))
-    //     }
-    //     ;
-    //   } catch(e) {
-    //     console.log("ERROR NO GET DATA: ",e)
+    //     const jsonValue = JSON.stringify(value)
+    //     await AsyncStorage.setItem('@myos'+route.params.user, jsonValue)
+    //   } catch (e) {
+    //     console.log("Erro ao salver.",e)
     //   }
     // }
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
-    var requestOptions = {
-    method: 'GET',
-    headers: myHeaders,
-    redirect: 'follow'
-    };
-
-    useEffect(() => {fetch("http://168.195.212.5:8000/OS/My", requestOptions)
-    .then(response => response.json())
-    .then(result =>  {setOS(result), storeData(result)})
-    .then(OS.length>0 ? (setLoading(false)) : (console.log("is loading ta como: ",isLoading)))
-    .catch(error => console.log('error', error));})
+    const getData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('@myos'+route.params.user)
+        if (jsonValue !== null) {
+          setSavedOs(JSON.parse(jsonValue))
+          return(setSavedLoading(false))
+        }
+        else{
+          return(console.log('nodata'))
+        }
+        ;
+      } catch(e) {
+        console.log("ERROR NO GET DATA: ",e)
+      }
+    }
+    useEffect(() => {getData()})
+    
 
 
 
@@ -93,17 +82,17 @@ export default function MyOS({route , navigation} ) {
 
   return (
     <View style={styles.container}>
-          {isLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
+          {savedLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
                 (
                     
                     <> 
                      <View>
                          <Text style={styles.topo}>Ordem de Servicos:</Text>
-                         <Button onPress={() => navigation.navigate('AllMyOSModal',{OS: OS, token: route.params.token })} title="Ver Ordens concluidas"/>
+                         <Button onPress={() => navigation.navigate('AllMyOSModal',{OS: savedOS, token: route.params.token })} title="Ver Ordens concluidas"/>
 
       
                          <FlatList
-                        data={OS}
+                        data={savedOS}
                         renderItem={({item, index})=>
                         item.completed ? (console.log("")) : 
                         (Listar(item, index))

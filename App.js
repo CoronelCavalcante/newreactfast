@@ -15,13 +15,15 @@ import DetalhesDist from './screens/Distribuir/DetalhesDist';
 import DetalhesEmp from './screens/Employees/DetalhesEmp';
 import AllMyOSModal from './screens/OrdensServico/AllMyOSModal';
 import ModalAllDist from './screens/Distribuir/ModalAllDist';
+import MyOsOff from './screens/OrdensServico/MyOSOff'
+import ListarOsOff from './screens/OrdensServico/ListarOSOff'
 
 const Stack = createNativeStackNavigator();
 
 function App() {
   return(
     <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{ gestureEnbled: false}}>
             <Stack.Screen name= "Login" component={Login} options={{title: 'Login'}} />
             <Stack.Screen name= "Homescreen" component={Homescreen} options={{title: 'Home Employee'}} />
             <Stack.Screen name= "ManagerHome" component={ManagerHome} options={{title: 'Home Manager'}} />
@@ -36,6 +38,8 @@ function App() {
             <Stack.Screen name= "DetalhesEmp" component={DetalhesEmp} options={{title: 'Detalhes do funcionario'}} screenOptions={{presetation:'modal'}} />
             <Stack.Screen name= "AllMyOSModal" component={AllMyOSModal} options={{title: 'Todas as Ordens ja distribuidas'}} screenOptions={{presetation:'modal'}} />
             <Stack.Screen name= "ModalAllDist" component={ModalAllDist} options={{title: 'Todas as Ordens ja distribuidas'}} screenOptions={{presetation:'modal'}} />
+            <Stack.Screen name= "MyOsOff" component={MyOsOff} options={{title: 'Minhas Ordens Abertas Salva'}} />
+            <Stack.Screen name= "ListarOsOff" component={ListarOsOff} options={{title: 'Lista de Ordens Abertas Salvas'}} />
 
 
             
