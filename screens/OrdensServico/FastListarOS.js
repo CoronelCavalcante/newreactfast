@@ -30,8 +30,11 @@ export default function FastListarOS({route , navigation} ) {
       try {
         const jsonValue = JSON.stringify(value)
         await AsyncStorage.setItem('@abertas', jsonValue)
+        // await AsyncStorage.setItem('@abertasDate', new Date())
+        // console.log("logando um date qualquer:", new Date()  )
+
       } catch (e) {
-        console.log("Erro ao salver.",e)
+        console.log("Erro ao salvar.",e)
       }
     }
     // const getData = async () => {

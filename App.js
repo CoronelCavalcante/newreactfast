@@ -16,7 +16,10 @@ import DetalhesEmp from './screens/Employees/DetalhesEmp';
 import AllMyOSModal from './screens/OrdensServico/AllMyOSModal';
 import ModalAllDist from './screens/Distribuir/ModalAllDist';
 import MyOsOff from './screens/OrdensServico/MyOSOff'
-import ListarOsOff from './screens/OrdensServico/ListarOSOff'
+import ListarOsOff from './screens/OrdensServico/ListarOSOff';
+import OsDistOff from './screens/Distribuir/OsDistOff';
+
+
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +43,7 @@ function App() {
             <Stack.Screen name= "ModalAllDist" component={ModalAllDist} options={{title: 'Todas as Ordens ja distribuidas'}} screenOptions={{presetation:'modal'}} />
             <Stack.Screen name= "MyOsOff" component={MyOsOff} options={{title: 'Minhas Ordens Abertas Salva'}} />
             <Stack.Screen name= "ListarOsOff" component={ListarOsOff} options={{title: 'Lista de Ordens Abertas Salvas'}} />
+            <Stack.Screen name= "OsDistOff" component={OsDistOff} options={{title: 'Detalhes Ordens Distribuidas Offline'}} />
 
 
             

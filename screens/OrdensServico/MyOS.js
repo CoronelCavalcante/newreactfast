@@ -111,7 +111,7 @@ export default function MyOS({route , navigation} ) {
                             }
               
                         />
-                        
+                        <Text>Fim da lista</Text>
                      </View>
                      
                 </>

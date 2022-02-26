@@ -9,38 +9,33 @@ import {
   Button,
   TouchableOpacity,
   FlatList,
-  ActivityIndicator,
-  Alert
+  ActivityIndicator
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
+export default function OsDistOff({route , navigation} ) {
 
+    const [isLoading, setLoading] = useState(true);
+    const [OS, setOS] = useState([]);
 
-
-export default function ListarOsOff({route , navigation} ) {
-
-    
     const [savedOS, setSavedOs] = useState([]);
     const [savedLoading, setSavedLoading] = useState(true)
-    const [date, setDate] = useState()
 
-    // const storeData = async (value) => {
-    //   try {
-    //     const jsonValue = JSON.stringify(value)
-    //     await AsyncStorage.setItem('@abertas', jsonValue)
-    //   } catch (e) {
-    //     console.log("Erro ao salvar.",e)
-    //   }
-    // }
+    const storeData = async (value) => {
+      try {
+        const jsonValue = JSON.stringify(value)
+        await AsyncStorage.setItem('@dist', jsonValue)
+      } catch (e) {
+        console.log("Erro ao salver.",e)
+      }
+    }
     const getData = async () => {
       try {
-        const jsonValue = await AsyncStorage.getItem('@abertas')
-        const date = await AsyncStorage.getItem('@abertasDate')
+        const jsonValue = await AsyncStorage.getItem('@dist')
         if (jsonValue !== null) {
           setSavedOs(JSON.parse(jsonValue))
-          setDate(date)
           return(setSavedLoading(false))
         }
         else{
@@ -51,77 +46,55 @@ export default function ListarOsOff({route , navigation} ) {
         console.log("ERROR NO GET DATA: ",e)
       }
     }
-    // const getData = async () => {
-    //   try {
-    //     const jsonValue = await AsyncStorage.getItem('@abertas')
-    //     return jsonValue != null ? JSON.parse(jsonValue) : null;
-    //   } catch(e) {
-    //     // error reading value
-    //   }
-    // }
-    // // console.log(getSaved)
-    // async function save(key, value){
-    //   await SecureStore.setItemAsync(key, value)
-    // }
-
-    // async function getSaved(){
-    //   let result = await SecureStore.getItemAsync('Abertas');
-    //   if (result){
-    //     setSavedOs(result),
-    //     console.log(savedOS)
-    //   } else{
-    //     console.log("else do Abertas")
-    //   }
-    // }
-
-
+   
 
 
 
 
       function Listar(obj) {
         return(          
-          <TouchableOpacity onPress={() => navigation.navigate('ModalOS',{obj: obj, token: route.params.token })}>
+          <TouchableOpacity onPress={() => navigation.navigate('DetalhesDist',{obj: obj, token: route.params.token })}>
             <Text style={styles.cell}>   
-              <Text style={{fontWeight: 'bold'}}>ID da Ordem: </Text> {obj.ordem_servico.id}
+              <Text style={{fontWeight: 'bold'}}>ID Ordem: </Text> {obj.ordem_servico.id}
               {'\n'}
-              data abertura: {obj.ordem_servico.data_abertura}
+              email funcionario: {obj.employee.email}
               {'\n'}
-              Razao social: {obj.cliente.razao}
+              nome cliente: {obj.cliente.razao}
+              {'\n'}              
+              email manager: {obj.poster.email}
               {'\n'}
-              {obj.ordem_servico.mensagem}
-             
+              distribuida em: {obj.distribuida.created_at}
                                                         
             </Text>
          </TouchableOpacity>
-
             );
     
         }
         ;
-
-
         getData();
+
 
   return (
     <View style={styles.container}>
          {savedLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
-                (
-                    
+                (                    
                     <> 
+
                      <View>
-                         <Text style={styles.topo}>{date}Ordem de Servicos Ja Salvas: {savedOS.length}</Text>
+                         <Text style={styles.topo}>Ordem  Distribuidas Não Concluidas salvas: {'\n'}</Text>
+                         <Button style={styles.loginBtn} color='green'onPress={() => navigation.navigate('ModalAllDist',{OS: savedOS, token: route.params.token })} title="Ver Ordens concluidas"/>
+
                          <FlatList
                         data={savedOS}
                         renderItem={({item, index})=>
-                        Listar(item, index)
+                        item.completed ? (console.log("")) : ( Listar(item, index))
                 
                             }
               
                         />
                          
                      </View>
-              
+                     
                 </>
                 
                 )}
@@ -157,7 +130,7 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     color: 'black',
-    fontSize: 18
+    fontSize: 16
 
   },
 
@@ -181,7 +154,8 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
+    marginTop: 20,
+    marginBottom: 20,
     backgroundColor: "#1676DD",
   },
   lista:{

@@ -101,8 +101,7 @@ export default function ModalOS({route , navigation}){
           {'\n'}
           Endereço Mac: {login.mac}
           {'\n'}{'\n'}
-          {distribuir()}                {abrirNoMaps()}   
-          
+          {route.params.token.manager ? (distribuir()) : (console.log())}                {abrirNoMaps()}     
           
 
 

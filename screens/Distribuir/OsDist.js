@@ -31,21 +31,21 @@ export default function OsDist({route , navigation} ) {
         console.log("Erro ao salver.",e)
       }
     }
-    const getData = async () => {
-      try {
-        const jsonValue = await AsyncStorage.getItem('@dist')
-        if (jsonValue !== null) {
-          setSavedOs(JSON.parse(jsonValue))
-          return(setSavedLoading(false))
-        }
-        else{
-          return(console.log('nodata'))
-        }
-        ;
-      } catch(e) {
-        console.log("ERROR NO GET DATA: ",e)
-      }
-    }
+    // const getData = async () => {
+    //   try {
+    //     const jsonValue = await AsyncStorage.getItem('@dist')
+    //     if (jsonValue !== null) {
+    //       setSavedOs(JSON.parse(jsonValue))
+    //       return(setSavedLoading(false))
+    //     }
+    //     else{
+    //       return(console.log('nodata'))
+    //     }
+    //     ;
+    //   } catch(e) {
+    //     console.log("ERROR NO GET DATA: ",e)
+    //   }
+    // }
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
     var requestOptions = {
@@ -83,33 +83,18 @@ export default function OsDist({route , navigation} ) {
     
         }
         ;
-        getData();
 
 
   return (
     <View style={styles.container}>
-         {isLoading ? (savedLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>): ( <> 
-                     <View>
-                         <Text style={styles.topo}>Ordem distribuidas ja salvas: {savedOS.length}</Text>
-                         <FlatList
-                        data={savedOS}
-                        renderItem={({item, index})=>
-                        Listar(item, index)
-                
-                            }
-              
-                        />
-                         
-                     </View>
-              
-                </>)) : 
+         {isLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
                 (
                     
                     <> 
 
                      <View>
-                         <Text style={styles.topo}>Ordem de Servicos Distribuidas Não Concluidas: {'\n'}</Text>
-                         <Button style={styles.loginBtn} onPress={() => navigation.navigate('ModalAllDist',{OS: OS, token: route.params.token })} title="Ver Ordens concluidas"/>
+                         <Text style={styles.topo}>{OS.length} Ordem Distribuidas Não Concluidas: {'\n'}</Text>
+                         <Button style={styles.loginBtn} color= 'green' onPress={() => navigation.navigate('ModalAllDist',{OS: OS, token: route.params.token })} title="Ver Ordens concluidas"/>
 
                          <FlatList
                         data={OS}
@@ -176,6 +161,7 @@ const styles = StyleSheet.create({
   },
 
   loginBtn: {
+    color: 'green',
     width: "80%",
     borderRadius: 25,
     height: 50,

@@ -69,6 +69,11 @@ export default function ManagerHome( {route , navigation}) {
         </TouchableOpacity>
       </View>
       <View style={styles.inputView}>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('OsDistOff', {token: route.params.token})}}>
+      <Text style={[{color: 'white'}]}>Ordens Distribuidas OFFLINE</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.inputView}>
       <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('CreateUser', {token: route.params.token})}}>
       <Text style={[{color: 'white'}]}>Novo Funcionario</Text>
         </TouchableOpacity>

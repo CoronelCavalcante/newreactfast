@@ -24,7 +24,11 @@ export default function Homescreen( {route , navigation}) {
       <Text style={[{color: 'white'}]}>Minhas Ordens</Text>
         </TouchableOpacity>
       </View>
-      
+      <View style={styles.inputView}>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('MyOsOff', {token: route.params.token})}}>
+      <Text style={[{color: 'white'}]}>Minhas Ordens OFFLINE</Text>
+        </TouchableOpacity>
+      </View>
       
     </View>
   );
