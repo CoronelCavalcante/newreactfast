@@ -23,9 +23,9 @@ export default function ModalAllDist({route , navigation} ) {
             <Text style={styles.cell}>   
               <Text style={{fontWeight: 'bold'}}>ID da Ordem: {obj.ordem_servico.id} </Text> 
               {'\n'}
-              ID Cliente: {obj.cliente.id}
+              ID Cliente: {obj.cliente?.id}
               {'\n'}
-              Razao social: {obj.cliente.razao}
+              Razao social: {obj.cliente?.razao}
               {'\n'}
               {obj.ordem_servico.mensagem}
               {'\n'}

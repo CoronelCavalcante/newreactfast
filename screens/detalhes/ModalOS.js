@@ -16,7 +16,7 @@ import openMap from "react-native-open-maps";
 
 
 
-//supostamente nao tem problema se o cliente nao tem login mas ainda falta teste
+//teve problema com login e cliente nulls entao eu coloquei uns ? pra resolver
 //deixando assunto e contrato como array por enquanto.
 
 export default function ModalOS({route , navigation}){
@@ -25,7 +25,7 @@ export default function ModalOS({route , navigation}){
   var login = route.params.obj.login
   var assunto = route.params.obj.assunto
   var contrato = route.params.obj.contrato
-  var horario = 'fail switch'
+  var horario = 'Null'
  
   switch(ordem.melhor_horario_agenda){
     case "Q":
@@ -63,11 +63,11 @@ export default function ModalOS({route , navigation}){
     return(
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>
-          {cliente.razao}    ID: {cliente.id} 
+          {cliente?.razao}    ID: {cliente?.id} 
           {'\n'}
           Endereço: {ordem.endereco}
           {'\n'}
-          fone: {cliente.fone} - {cliente.telefone_comercial} - {cliente.celular}
+          fone: {cliente?.fone} - {cliente?.telefone_comercial} - {cliente?.celular}
           {'\n'}
           Assunto: {assunto.assunto}
           {'\n'}
@@ -79,27 +79,27 @@ export default function ModalOS({route , navigation}){
           {'\n'}
           Dados tecnicos:
           {'\n'}
-          tipo_conexao: {login.tipo_conexao}
+          tipo_conexao: {login?.tipo_conexao}
           {'\n'}
-          tipo_equipamento: {login.tipo_equipamento}
+          tipo_equipamento: {login?.tipo_equipamento}
           {'\n'}
-          interface transmissao: {login.interface_transmissao}
+          interface transmissao: {login?.interface_transmissao}
           {'\n'}
-          interface transmissao fibra: {login.interface_transmissao_fibra}
+          interface transmissao fibra: {login?.interface_transmissao_fibra}
           {'\n'}
-          usuario: {login.usuario_router}0,
+          usuario: {login?.usuario_router}0,
           {'\n'}
-          sinal: {login.sinal_ultimo_atendimento}
+          sinal: {login?.sinal_ultimo_atendimento}
           {'\n'}
           {'\n'}
           Bloquerio Automatico: {contrato.bloqueio_automatico}
           {'\n'}
           {'\n'}
-          senha r1: {login.senha_router1}
+          senha r1: {login?.senha_router1}
           {'\n'}
-          Endereço ip: {login.ip}
+          Endereço ip: {login?.ip}
           {'\n'}
-          Endereço Mac: {login.mac}
+          Endereço Mac: {login?.mac}
           {'\n'}{'\n'}
           {route.params.token.manager ? (distribuir()) : (console.log())}                {abrirNoMaps()}     
           

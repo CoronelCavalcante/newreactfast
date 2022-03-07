@@ -69,11 +69,11 @@ export default function DetalhesDist({route , navigation}){
           Para: {employee.email}
           {'\n'}
           {'\n'}
-          {cliente.razao} {cliente.id}
+          {cliente?.razao} {cliente?.id}
           {'\n'}
           Endereço: {ordem.endereco}
           {'\n'}
-          fone: {cliente.fone} - {cliente.telefone_comercial} - {cliente.celular}
+          fone: {cliente?.fone} - {cliente?.telefone_comercial} - {cliente?.celular}
           {'\n'}
           Assunto: {assunto.assunto}
           {'\n'}
@@ -89,25 +89,25 @@ export default function DetalhesDist({route , navigation}){
           Bloqueio Automatico: {contrato.bloqueio_automatico}
           {'\n'}
           
-          tipo_conexao: {login.tipo_conexao}
+          tipo_conexao: {login?.tipo_conexao}
           {'\n'}
-          tipo_equipamento: {login.tipo_equipamento}
+          tipo_equipamento: {login?.tipo_equipamento}
           {'\n'}
-          interface transmissao: {login.interface_transmissao}
+          interface transmissao: {login?.interface_transmissao}
           {'\n'}
-          interface transmissao fibra: {login.interface_transmissao_fibra}
+          interface transmissao fibra: {login?.interface_transmissao_fibra}
           {'\n'}
-          usuario: {login.usuario_router}
+          usuario: {login?.usuario_router}
           {'\n'}
-          sinal: {login.sinal_ultimo_atendimento}
+          sinal: {login?.sinal_ultimo_atendimento}
           {'\n'}
           {'\n'}
         
-          senha r1: {login.senha_router1}
+          senha r1: {login?.senha_router1}
           {'\n'}
-          Endereço ip: {login.ip}
+          Endereço ip: {login?.ip}
           {'\n'}
-          Endereço Mac: {login.mac}
+          Endereço Mac: {login?.mac}
           {'\n'}
           {'\n'}{'\n'}
           {distribuir()}                {abrirNoMaps()}   

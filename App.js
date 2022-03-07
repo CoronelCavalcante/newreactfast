@@ -29,8 +29,8 @@ function App() {
         <Stack.Navigator screenOptions={{ gestureEnbled: false}}>
             <Stack.Screen name= "Login" component={Login} options={{title: 'Login'}} />
             <Stack.Screen name= "Homescreen" component={Homescreen} options={{title: 'Home Employee'}} />
-            <Stack.Screen name= "ManagerHome" component={ManagerHome} options={{title: 'Home Manager'}} />
-            <Stack.Screen name= "CreateUser" component={CreateUser} options={{title: 'Adicionar Novo Funcionario'}} />
+            <Stack.Screen name= "ManagerHome" component={ManagerHome} options={{title: 'Home Manager', headerShown: false}} />
+            <Stack.Screen name= "CreateUser" component={CreateUser} options={{title: 'Adicionar Novo Funcionario', headerShown: false}} />
             <Stack.Screen name= "FastListarOS" component={FastListarOS} options={{title: 'Lista de Ordens Abertas'}} />
             <Stack.Screen name= "MyOS" component={MyOS} options={{title: 'Minhas Ordens Abertas'}} />
             <Stack.Screen name= "ListaEmp" component={ListaEmp} options={{title: 'Lista de Funcionarios'}} />

@@ -99,7 +99,7 @@ export default function FastListarOS({route , navigation} ) {
               {'\n'}
               data abertura: {obj.ordem_servico.data_abertura}
               {'\n'}
-              Razao social: {obj.cliente.razao}
+              Razao social: {obj.cliente?.razao}
               {'\n'}
               {obj.ordem_servico.mensagem}
              

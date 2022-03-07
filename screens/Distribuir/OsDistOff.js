@@ -59,7 +59,7 @@ export default function OsDistOff({route , navigation} ) {
               {'\n'}
               email funcionario: {obj.employee.email}
               {'\n'}
-              nome cliente: {obj.cliente.razao}
+              nome cliente: {obj.cliente?.razao}
               {'\n'}              
               email manager: {obj.poster.email}
               {'\n'}

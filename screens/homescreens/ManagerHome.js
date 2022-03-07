@@ -11,6 +11,7 @@ import {
   Platform,
 } from "react-native";
 // import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function ManagerHome( {route , navigation}) {
@@ -94,6 +95,11 @@ export default function ManagerHome( {route , navigation}) {
       <Text style={[{color: 'white'}]}>Lista de funcionarios</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.inputView2}>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{AsyncStorage.clear(),navigation.goBack()}}>
+      <Text style={[{color: 'white'}]}>Log OFF</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -112,6 +118,16 @@ const styles = StyleSheet.create({
 
   inputView: {
     backgroundColor: "#1676DD",
+    borderRadius: 30,
+    width: "70%",
+    height: 45,
+    marginTop: 20,
+
+    alignItems: "center",
+  },
+  
+  inputView2: {
+    backgroundColor: "red",
     borderRadius: 30,
     width: "70%",
     height: 45,
