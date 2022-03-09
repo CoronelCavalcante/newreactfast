@@ -9,9 +9,12 @@ import {
   Button,
   TouchableOpacity,
   Platform,
+  Alert,
 } from "react-native";
 // import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
+
 
 
 export default function ManagerHome( {route , navigation}) {
@@ -38,6 +41,21 @@ export default function ManagerHome( {route , navigation}) {
   //   text = JSON.stringify(location);
   // }
 
+  async function clearAll() {
+    // const keys = ["email", "manager", "token"]
+    try {
+      await SecureStore.deleteItemAsync("email"),
+      await SecureStore.deleteItemAsync("password"),
+      await SecureStore.deleteItemAsync("token"),
+      await AsyncStorage.clear(),
+      console.log("CLEAR")
+    } catch(e) {
+      // clear error
+      console.log(e)
+    }
+  
+    console.log('Done.')
+  }
   return (
     <View style={styles.container}>
      
@@ -96,7 +114,20 @@ export default function ManagerHome( {route , navigation}) {
         </TouchableOpacity>
       </View>
       <View style={styles.inputView2}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{AsyncStorage.clear(),navigation.goBack()}}>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{
+    Alert.alert( 
+      "tem certeza que desaja sair?",
+      "Ao sair as informações salvas serao apagadas e o login nao sera feito altomaticamente ",
+      [
+          {text: "Cancelar", onPress:()=>console.log("CANCELADO"),
+          style: "cancel"},
+          {text: "Confirmar", onPress:()=>{clearAll(), navigation.goBack()}}
+          
+      ])
+
+
+
+      }}>
       <Text style={[{color: 'white'}]}>Log OFF</Text>
         </TouchableOpacity>
       </View>

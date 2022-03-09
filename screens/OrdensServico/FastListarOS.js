@@ -13,6 +13,8 @@ import {
   Alert
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
+
 
 
 
@@ -23,8 +25,8 @@ export default function FastListarOS({route , navigation} ) {
 
     const [isLoading, setLoading] = useState(true);
     const [OS, setOS] = useState([]);
-    const [savedOS, setSavedOs] = useState([]);
-    const [savedLoading, setSavedLoading] = useState(true)
+    const [savedToken, setSavedToken] = useState("");
+    
 
     const storeData = async (value) => {
       try {
@@ -74,15 +76,25 @@ export default function FastListarOS({route , navigation} ) {
     //     console.log("else do Abertas")
     //   }
     // }
+    async function getToken(){
+      let result = await SecureStore.getItemAsync("token");
+      if (result){
+        setSavedToken(result)
+
+      } else{
+        console.log("else do getToken")
+      }
+    }
 
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
+    myHeaders.append("Authorization", "Bearer "+ savedToken);
     var requestOptions = {
     method: 'GET',
     headers: myHeaders,
     redirect: 'follow'
     };
-    useEffect(() => {fetch("http://168.195.212.5:8000/OS/Abertas", requestOptions)
+    useEffect(() => {
+      getToken(),fetch("http://168.195.212.5:8000/OS/Abertas", requestOptions)
     .then(response => response.json())
     .then(result => {setOS(result)})
     .then(OS.length>0 ? (setLoading(false), storeData(OS)) : (console.log()))

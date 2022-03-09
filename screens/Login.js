@@ -18,10 +18,12 @@ export default function Login({ navigation }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [savedEmail, setSavedEmail] = useState("");
-    const [savedPassword, setSavedPassword] = useState("");
+    const [savedManager, setSavedManager] = useState("");
+    const [savedToken, setSavedToken] = useState("");
     getEmail();
-    getPassword();
-    // savedEmail && savedPassword !== "" ? (logar(savedEmail,savedPassword)) : (console.log("else do savedEmail de "));
+    getManager();
+    getToken();
+    savedEmail && savedManager && savedToken !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
     //mais facil de resolver isso é la na tela principal mesmo colocar pra chegar se tem saved email e password se tiver ja mandar pra um saved logar
 
 
@@ -30,22 +32,54 @@ export default function Login({ navigation }) {
     }
 
     async function getEmail(){
-      let result = await SecureStore.getItemAsync('email');
+      let result = await SecureStore.getItemAsync("email");
       if (result){
-        setSavedEmail(result)
+        setSavedEmail(result),
+        console.log("logando saved email", savedEmail)
       } else{
         console.log("else do getEmail")
       }
     }
-    async function getPassword(){
-      let result = await SecureStore.getItemAsync('password');
+    async function getManager(){
+      let result = await SecureStore.getItemAsync("manager");
       if (result){
-        setSavedPassword(result)
+        setSavedManager(result),
+        console.log("logando saved manager", savedManager)
+
       } else{
-        console.log("else do getPassword")
+        console.log("else do getManager")
+      }
+    }
+    async function getToken(){
+      let result = await SecureStore.getItemAsync("token");
+      if (result){
+        setSavedToken(result),
+        console.log("logando saved token", savedToken)
+
+      } else{
+        console.log("else do getToken")
       }
     }
 
+    // async function getPassword(){
+    //   let result = await SecureStore.getItemAsync('password');
+    //   if (result){
+    //     setSavedPassword(result)
+    //   } else{
+    //     console.log("else do getPassword")
+    //   }
+    // }
+   
+    function savedLogar(){
+      const token ={
+        access_token: savedToken,
+      };
+      savedManager === "True" ? (navigation.navigate('ManagerHome',  {token: token, user: savedEmail})
+
+      ) : (
+        navigation.navigate('Homescreen', {token: token, user: savedEmail})
+      )
+    }
 
 
 
@@ -68,7 +102,7 @@ export default function Login({ navigation }) {
         err.status = response.status
         throw err}
         return response.json()})
-    .then(result => result.manager ? ( save("email", email),save("password", password) ,navigation.navigate('ManagerHome', {token: result, user: email})) : (navigation.navigate('Homescreen', {token: result, user: email})))
+    .then(result => result.manager ? ( save("email", email),save("password", password), save("token", result.access_token), save("manager", "True") ,navigation.navigate('ManagerHome',  {token: result, user: email})) : (save("email", email),save("password", password), save("manager", "False", save("token", result)),navigation.navigate('Homescreen', {token: result, user: email})))
     .catch(error => {error.status == 403 ? Alert.alert("Usuario ou Senha Incorreta") : (Alert.alert("Impossivel Conectar ao servidor")) });
     }
     
@@ -109,7 +143,9 @@ export default function Login({ navigation }) {
       <TouchableOpacity style={styles.loginBtn} onPress={()=>{logar(email,password)}}>
         <Text style={[{color: 'white'}]}>LOGIN</Text>
       </TouchableOpacity>
+      
     </View>
+    
   );
 }
 
