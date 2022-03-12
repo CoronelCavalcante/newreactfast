@@ -26,6 +26,7 @@ export default function FastListarOS({route , navigation} ) {
     const [isLoading, setLoading] = useState(true);
     const [OS, setOS] = useState([]);
     const [savedToken, setSavedToken] = useState("");
+    const [loadingNT, setLoadingNT] = useState(true);    
     
 
     const storeData = async (value) => {
@@ -80,26 +81,101 @@ export default function FastListarOS({route , navigation} ) {
       let result = await SecureStore.getItemAsync("token");
       if (result){
         setSavedToken(result)
+        console.log("token no saved token:", savedToken)
 
       } else{
         console.log("else do getToken")
       }
     }
 
+    // var myHeaders = new Headers();
+    // myHeaders.append("Authorization", "Bearer "+ savedToken);
+    // var requestOptions = {
+    // method: 'GET',
+    // headers: myHeaders,
+    // redirect: 'follow'
+    // };
+    // useEffect(() => {
+    // getToken();
+    // console.log("confirmo useEffect");
+    // savedToken ? (
+    //   console.log("tru do saved token ?"),
+    // fetch("http://168.195.212.5:8000/OS/Abertas", requestOptions)
+    // .then(response => response.json())
+    // .then(result => {result.detail ==="could not validate credentials" ? (console.log("token expirado ", result.detail), newToken()) : (console.log(""), setOS(result))})
+    // .then(OS.length>0 ? (setLoading(false), storeData(OS)) : (console.log()))
+    // .catch(error => console.log('error', error))) : (console.log("carregando saved token"))}, [savedToken])
+
+
+    
+
+
+    async function APICall(){
+      console.log("API CAL ACIONADA")
+    getToken();
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "Bearer "+ savedToken);
     var requestOptions = {
     method: 'GET',
     headers: myHeaders,
     redirect: 'follow'
-    };
-    useEffect(() => {
-      getToken(),fetch("http://168.195.212.5:8000/OS/Abertas", requestOptions)
+    };  
+    savedToken ? (
+    console.log("tru do saved token ?"),
+    fetch("http://168.195.212.5:8000/OS/Abertas", requestOptions)
     .then(response => response.json())
-    .then(result => {setOS(result)})
-    .then(OS.length>0 ? (setLoading(false), storeData(OS)) : (console.log()))
-    .catch(error => console.log('error', error));})
+    .then(result => {result.detail ==="could not validate credentials" ? (console.log("token expirado ", result.detail), loadingNT ? (newToken()):(console.log("new token false"))) : (console.log(""), setOS(result))})
+    .then(OS.length>0 ? (setLoading(false), storeData(OS), setLoadingNT(true)) : (console.log()))
+    .catch(error => console.log('error', error))) 
+    : (console.log("carregando saved token"))
+    }
 
+    
+    async function getEmail(){
+      let result = await SecureStore.getItemAsync("email");
+      if (result){
+        console.log("true do get email" , result)
+        return(result)
+
+      } else{
+        console.log("else do getEmail")
+      }
+    }
+    async function getPassword(){
+      let result = await SecureStore.getItemAsync("password");
+      if (result){
+        console.log("true do get password", result)
+        return(result)
+
+      } else{
+        console.log("else do getEmail")
+      }
+    }
+
+    async function newToken(){
+    console.log("buscando novo token")
+    var formdata = new FormData();
+    formdata.append("username", await getEmail());
+    formdata.append("password", await getPassword());
+    
+    var requestOptions = {
+     method: 'POST',
+    body: formdata,
+    redirect: 'follow'
+    };
+    fetch("http://168.195.212.5:8000/login", requestOptions)
+    .then(response => {if (!response.ok) {
+        // create error object and reject if not a 2xx response code COLOCAR ALERTA DE ERROR. mudar o respota token pra uma variavel pq nao pode função
+        let err = new Error("HTTP status code: " + response.status)
+        err.response = response
+        err.status = response.status
+        throw err}
+        return response.json()})
+    .then(response => {SecureStore.setItemAsync("token", response.access_token), setLoadingNT(false)})
+    .catch(error => {error.status == 403 ? console.log("Usuario ou Senha Incorreta") : (console.log("Impossivel Conectar ao servidor")) });
+      
+  };
+    
 
 
 
@@ -125,7 +201,7 @@ export default function FastListarOS({route , navigation} ) {
         ;
 
 
-
+  isLoading ? (APICall()) : (console.log());
   return (
     <View style={styles.container}>
          {isLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 

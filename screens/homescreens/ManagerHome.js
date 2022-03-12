@@ -4,11 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  TextInput,
-  Button,
   TouchableOpacity,
-  Platform,
   Alert,
 } from "react-native";
 // import * as Location from 'expo-location';
@@ -18,37 +14,29 @@ import * as SecureStore from 'expo-secure-store';
 
 
 export default function ManagerHome( {route , navigation}) {
-  // const [location, setLocation] = useState(null);
-  // const [errorMsg, setErrorMsg] = useState(null);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== 'granted') {
-  //       setErrorMsg('Permission to access location was denied');
-  //       return;
-  //     }
-
-  //     let location = await Location.getCurrentPositionAsync({});
-  //     setLocation(location);
-  //   })();
-  // }, []);
-
-  // let text = 'Waiting..';
-  // if (errorMsg) {
-  //   text = errorMsg;
-  // } else if (location) {
-  //   text = JSON.stringify(location);
-  // }
+  async function mecherToken() {
+    // const keys = ["email", "manager", "token"]
+    try {
+      SecureStore.setItemAsync("token", "token trocado para nao valido")
+      console.log("token trocado para nao valido")
+    } catch(e) {
+      // clear error
+      console.log(e)
+    }
+  
+    console.log('Done.')
+  }
 
   async function clearAll() {
     // const keys = ["email", "manager", "token"]
     try {
       await SecureStore.deleteItemAsync("email"),
       await SecureStore.deleteItemAsync("password"),
+      await SecureStore.deleteItemAsync("manager"),
       await SecureStore.deleteItemAsync("token"),
       await AsyncStorage.clear(),
-      console.log("CLEAR")
+      console.log("CLEAR"),
+      await navigation.goBack()
     } catch(e) {
       // clear error
       console.log(e)
@@ -69,7 +57,11 @@ export default function ManagerHome( {route , navigation}) {
       <Text style={styles.topo}>Logado como: {route.params.user}</Text>  
       </View>
 
-
+      <View style={styles.inputView}>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{mecherToken()}}>
+      <Text style={[{color: 'white'}]}>mecher token</Text>
+        </TouchableOpacity>
+      </View>
      
       <View style={styles.inputView}>
       <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('FastListarOS', {token: route.params.token})}}>
@@ -121,7 +113,7 @@ export default function ManagerHome( {route , navigation}) {
       [
           {text: "Cancelar", onPress:()=>console.log("CANCELADO"),
           style: "cancel"},
-          {text: "Confirmar", onPress:()=>{clearAll(), navigation.goBack()}}
+          {text: "Confirmar", onPress:()=>{clearAll()}}
           
       ])
 

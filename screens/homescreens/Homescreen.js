@@ -19,9 +19,11 @@ export default function Homescreen( {route , navigation}) {
     try {
       await SecureStore.deleteItemAsync("email"),
       await SecureStore.deleteItemAsync("password"),
+      await SecureStore.deleteItemAsync("manager"),
       await SecureStore.deleteItemAsync("token"),
       await AsyncStorage.clear(),
-      console.log("CLEAR")
+      console.log("CLEAR"),
+      await navigation.goBack()
     } catch(e) {
       // clear error
       console.log(e)

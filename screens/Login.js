@@ -23,7 +23,6 @@ export default function Login({ navigation }) {
     getEmail();
     getManager();
     getToken();
-    savedEmail && savedManager && savedToken !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
     //mais facil de resolver isso é la na tela principal mesmo colocar pra chegar se tem saved email e password se tiver ja mandar pra um saved logar
 
 
@@ -35,7 +34,9 @@ export default function Login({ navigation }) {
       let result = await SecureStore.getItemAsync("email");
       if (result){
         setSavedEmail(result),
-        console.log("logando saved email", savedEmail)
+        console.log("logando saved email", savedEmail),
+        savedEmail && savedManager && savedToken !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
+
       } else{
         console.log("else do getEmail")
       }
@@ -44,7 +45,9 @@ export default function Login({ navigation }) {
       let result = await SecureStore.getItemAsync("manager");
       if (result){
         setSavedManager(result),
-        console.log("logando saved manager", savedManager)
+        console.log("logando saved manager", savedManager),
+        savedEmail && savedManager && savedToken !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
+
 
       } else{
         console.log("else do getManager")
@@ -54,7 +57,9 @@ export default function Login({ navigation }) {
       let result = await SecureStore.getItemAsync("token");
       if (result){
         setSavedToken(result),
-        console.log("logando saved token", savedToken)
+        console.log("logando saved token", savedToken),
+        savedEmail && savedManager && savedToken !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
+
 
       } else{
         console.log("else do getToken")
@@ -71,22 +76,29 @@ export default function Login({ navigation }) {
     // }
    
     function savedLogar(){
+      (console.log("chegou no savedlogar"))
       const token ={
         access_token: savedToken,
       };
-      savedManager === "True" ? (navigation.navigate('ManagerHome',  {token: token, user: savedEmail})
+      savedManager === "True" ? (navigation.navigate('ManagerHome',  {token: token, user: savedEmail, onGoBack: () => refresh()})
 
       ) : (
         navigation.navigate('Homescreen', {token: token, user: savedEmail})
       )
     }
 
-
+function refresh(){
+  console.log("CHEGOU NO REFRESH"),
+  setSavedEmail(""),
+  setSavedManager(""),
+  setSavedToken("")
+}
 
     function logar(email, password){
-        var formdata = new FormData();
+    var formdata = new FormData();
     formdata.append("username", email);
     formdata.append("password", password);
+    console.log("formdata: ",formdata)
     
     var requestOptions = {
      method: 'POST',
@@ -102,7 +114,7 @@ export default function Login({ navigation }) {
         err.status = response.status
         throw err}
         return response.json()})
-    .then(result => result.manager ? ( save("email", email),save("password", password), save("token", result.access_token), save("manager", "True") ,navigation.navigate('ManagerHome',  {token: result, user: email})) : (save("email", email),save("password", password), save("manager", "False", save("token", result)),navigation.navigate('Homescreen', {token: result, user: email})))
+    .then(result => result.manager ? ( save("email", email),save("password", password), save("token", result.access_token), save("manager", "True") ,navigation.navigate('ManagerHome',  {token: result, user: email, onGoBack: () => refresh()})) : (save("email", email),save("password", password), save("manager", "False", save("token", result)),navigation.navigate('Homescreen', {token: result, user: email, onGoBack: () => refresh()})))
     .catch(error => {error.status == 403 ? Alert.alert("Usuario ou Senha Incorreta") : (Alert.alert("Impossivel Conectar ao servidor")) });
     }
     
