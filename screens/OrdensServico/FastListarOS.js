@@ -14,6 +14,8 @@ import {
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
+//import DeviceInfo from 'react-native-device-info';
+
 
 
 
@@ -33,8 +35,9 @@ export default function FastListarOS({route , navigation} ) {
       try {
         const jsonValue = JSON.stringify(value)
         await AsyncStorage.setItem('@abertas', jsonValue)
-        // await AsyncStorage.setItem('@abertasDate', new Date())
-        // console.log("logando um date qualquer:", new Date()  )
+         await AsyncStorage.setItem('@abertasDate', String(new Date()))
+         //console.log("logando um date qualquer:", String(new Date())  )
+         //console.log("device info:", DeviceInfo.getTimezone());
 
       } catch (e) {
         console.log("Erro ao salvar.",e)

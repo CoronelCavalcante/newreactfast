@@ -110,7 +110,7 @@ export default function ListarOsOff({route , navigation} ) {
                     
                     <> 
                      <View>
-                         <Text style={styles.topo}>{date}Ordem de Servicos Ja Salvas: {savedOS.length}</Text>
+                         <Text style={styles.topo}>{date}Ordem de Servicos ja Salvas: {savedOS.length}</Text>
                          <FlatList
                         data={savedOS}
                         renderItem={({item, index})=>

@@ -13,7 +13,7 @@ import OsDist from './screens/Distribuir/OsDist';
 import ModalDist from './screens/detalhes/ModalDist';
 import DetalhesDist from './screens/Distribuir/DetalhesDist';
 import DetalhesEmp from './screens/Employees/DetalhesEmp';
-import AllMyOSModal from './screens/OrdensServico/AllMyOSModal';
+import AllMyOSModal from './screens/OrdensServico/allMyOSModal';
 import ModalAllDist from './screens/Distribuir/ModalAllDist';
 import MyOsOff from './screens/OrdensServico/MyOSOff'
 import ListarOsOff from './screens/OrdensServico/ListarOSOff';
@@ -28,9 +28,9 @@ function App() {
     <NavigationContainer>
         <Stack.Navigator screenOptions={{ gestureEnbled: false}}>
             <Stack.Screen name= "Login" component={Login} options={{title: 'Login'}} />
-            <Stack.Screen name= "Homescreen" component={Homescreen} options={{title: 'Home Employee'}} />
+            <Stack.Screen name= "Homescreen" component={Homescreen} options={{title: 'Home Employee', headerShown: false}} />
             <Stack.Screen name= "ManagerHome" component={ManagerHome} options={{title: 'Home Manager', headerShown: false}} />
-            <Stack.Screen name= "CreateUser" component={CreateUser} options={{title: 'Adicionar Novo Funcionario', headerShown: false}} />
+            <Stack.Screen name= "CreateUser" component={CreateUser} options={{title: 'Adicionar Novo Funcionario'}} />
             <Stack.Screen name= "FastListarOS" component={FastListarOS} options={{title: 'Lista de Ordens Abertas'}} />
             <Stack.Screen name= "MyOS" component={MyOS} options={{title: 'Minhas Ordens Abertas'}} />
             <Stack.Screen name= "ListaEmp" component={ListaEmp} options={{title: 'Lista de Funcionarios'}} />
