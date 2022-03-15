@@ -13,7 +13,7 @@ import OsDist from './screens/Distribuir/OsDist';
 import ModalDist from './screens/detalhes/ModalDist';
 import DetalhesDist from './screens/Distribuir/DetalhesDist';
 import DetalhesEmp from './screens/Employees/DetalhesEmp';
-import AllMyOSModal from './screens/OrdensServico/allMyOSModal';
+import AllMyOSModal from './screens/OrdensServico/AllMyOSModal';
 import ModalAllDist from './screens/Distribuir/ModalAllDist';
 import MyOsOff from './screens/OrdensServico/MyOSOff'
 import ListarOsOff from './screens/OrdensServico/ListarOSOff';

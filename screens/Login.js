@@ -20,9 +20,11 @@ export default function Login({ navigation }) {
     const [savedEmail, setSavedEmail] = useState("");
     const [savedManager, setSavedManager] = useState("");
     const [savedToken, setSavedToken] = useState("");
+    const [savedPassword, setSavedPassword] = useState("");
     getEmail();
     getManager();
     getToken();
+    getPassword();
     //mais facil de resolver isso é la na tela principal mesmo colocar pra chegar se tem saved email e password se tiver ja mandar pra um saved logar
 
 
@@ -46,7 +48,7 @@ export default function Login({ navigation }) {
       if (result){
         setSavedManager(result),
         console.log("logando saved manager", savedManager),
-        savedEmail && savedManager && savedToken !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
+        savedEmail && savedManager && savedToken && savedPassword !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
 
 
       } else{
@@ -58,7 +60,7 @@ export default function Login({ navigation }) {
       if (result){
         setSavedToken(result),
         console.log("logando saved token", savedToken),
-        savedEmail && savedManager && savedToken !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
+        savedEmail && savedManager && savedToken && savedPassword !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
 
 
       } else{
@@ -66,24 +68,28 @@ export default function Login({ navigation }) {
       }
     }
 
-    // async function getPassword(){
-    //   let result = await SecureStore.getItemAsync('password');
-    //   if (result){
-    //     setSavedPassword(result)
-    //   } else{
-    //     console.log("else do getPassword")
-    //   }
-    // }
+    async function getPassword(){
+      let result = await SecureStore.getItemAsync('password');
+      if (result){
+        setSavedPassword(result),
+        console.log("logando saved password", password),
+
+        savedEmail && savedManager && savedToken && savedPassword !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
+
+      } else{
+        console.log("else do getPassword")
+      }
+    }
    
     function savedLogar(){
       (console.log("chegou no savedlogar"))
       const token ={
         access_token: savedToken,
       };
-      savedManager === "True" ? (navigation.navigate('ManagerHome',  {token: token, user: savedEmail, onGoBack: () => refresh()})
+      savedManager === "True" ? (console.log("logando o que vai ser passado para o route:",token,savedPassword,savedEmail),navigation.navigate('ManagerHome',  {token: token, email: savedEmail, password: savedPassword, onGoBack: () => refresh()})
 
       ) : (
-        navigation.navigate('Homescreen', {token: token, user: savedEmail})
+        navigation.navigate('Homescreen', {token: token, email: savedEmail, password: savedPassword, onGoBack: () => refresh()})
       )
     }
 
@@ -114,7 +120,7 @@ function refresh(){
         err.status = response.status
         throw err}
         return response.json()})
-    .then(result => result.manager ? ( save("email", email),save("password", password), save("token", result.access_token), save("manager", "True") ,navigation.navigate('ManagerHome',  {token: result, user: email, onGoBack: () => refresh()})) : (save("email", email),save("password", password), save("manager", "False", save("token", result)),navigation.navigate('Homescreen', {token: result, user: email, onGoBack: () => refresh()})))
+    .then(result => result.manager ? ( save("email", email),save("password", password), save("token", result.access_token), save("manager", "True") ,navigation.navigate('ManagerHome',  {token: token, email: savedEmail, password: password, onGoBack: () => refresh()})) : (save("email", email),save("password", password), save("manager", "False", save("token", result)),navigation.navigate('Homescreen', {token: result, user: email, onGoBack: () => refresh()})))
     .catch(error => {error.status == 403 ? Alert.alert("Usuario ou Senha Incorreta") : (Alert.alert("Impossivel Conectar ao servidor")) });
     }
     
