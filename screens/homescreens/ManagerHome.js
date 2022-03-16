@@ -21,12 +21,13 @@ export default function ManagerHome( {route , navigation}) {
     const [savedOS, setSavedOs] = useState([]);
     const [savedLoading, setSavedLoading] = useState(true);
     const [date, setDate] = useState();
+    const [espera, setEspera] = useState(true);
 
     const storeData = async (value) => {
       try {
-        const jsonValue = JSON.stringify(value)
-        await AsyncStorage.setItem('@ManagerComplete', jsonValue)
-         await AsyncStorage.setItem('@APIDate', String(new Date()))
+        const jsonValue = JSON.stringify(value);
+        await AsyncStorage.setItem('@ManagerComplete', jsonValue);
+         await AsyncStorage.setItem('@APIDate', String(new Date()));
          //console.log("logando um date qualquer:", String(new Date())  )
          //console.log("device info:", DeviceInfo.getTimezone());
 
@@ -53,17 +54,15 @@ export default function ManagerHome( {route , navigation}) {
     var myHeaders = new Headers();
   
     myHeaders.append("Authorization", "Bearer " + savedToken);
-    console.log("logando myheaders:",myHeaders);
     var requestOptions = {
     method: 'GET',
     headers: myHeaders,
     redirect: 'follow'
     };
-    console.log("logando request options antes do fetch:", requestOptions);     
     fetch("http://168.195.212.5:8000/OS/Manager", requestOptions)
     .then(response => response.json())
-    .then(result => {result.detail ==="could not validate credentials" ? (console.log("token expirado ", result.detail), loadingNT ? (newToken()):(console.log("new token false"))) : (console.log("setOS result"), setOS(result))})
-    .then(OS.length>0 ? (console.log("SALVANDO A OS"),setLoading(false), storeData(OS), setLoadingNT(true)) : (console.log("false OS length")))
+    .then(result => {result.detail ==="could not validate credentials" ? (console.log("token expirado ", result), loadingNT ? (newToken()):(console.log("new token false"))) : ( setOS(result))})
+    .then(Object.keys(OS).length > 0 ? (console.log("SALVANDO A OS"),setLoading(false), storeData(OS)) : (console.log("false OS length ", Object.keys(OS).length)))
     .catch(error => console.log('error', error))
     }
 
@@ -90,7 +89,7 @@ export default function ManagerHome( {route , navigation}) {
     // }
 
     async function newToken(){
-    console.log("buscando novo token")
+    console.log("buscando novo token");
     var formdata = new FormData();
     formdata.append("username", route.params.email);
     formdata.append("password", route.params.password);
@@ -146,7 +145,7 @@ export default function ManagerHome( {route , navigation}) {
 
   const getData = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('@abertas')
+      const jsonValue = await AsyncStorage.getItem('@ManagerComplete')
       const date = await AsyncStorage.getItem('@APIDate')
       if (jsonValue !== null) {
         setSavedOs(JSON.parse(jsonValue))
@@ -164,7 +163,8 @@ export default function ManagerHome( {route , navigation}) {
   }
   
 
-  savedLoading ? (console.log("loading saved"),  getData()) : ( isLoading ? (APICall()) : (console.log("completou o isLoading")));
+  savedLoading ? (console.log("loading saved"),  getData()) : ( isLoading ? (APICall()) : (espera ? (getData(),setEspera(false)) : (console.log("completou o isLoading e o espera"))));
+  
   return (
     <View style={styles.container}>
      
@@ -174,15 +174,16 @@ export default function ManagerHome( {route , navigation}) {
 
 
       <View>
-      
-      <Text style={styles.topo}>Logado como: {route.params.email},data dos dados:{date} </Text>  
+      <Text  style={styles.topo}>Dados Armazenados {savedLoading ? ("carregando") : ("prontos")}
+      {'\n'}Estado do banco {espera ? ("Sincronizando") : ("Sincronização concluida")}
+      {'\n'}Logado como: {route.params.email},data dos dados:{date} </Text>  
       </View>
 
-      <View style={styles.inputView}>
+      {/* <View style={styles.inputView}>
       <TouchableOpacity style={styles.TextInput} onPress={()=>{mecherToken()}}>
       <Text style={[{color: 'white'}]}>mecher token</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
      
       <View style={styles.inputView}>
       <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('FastListarOS', {token: route.params.token})}}>
