@@ -86,10 +86,10 @@ export default function Login({ navigation }) {
       const token ={
         access_token: savedToken,
       };
-      savedManager === "True" ? (console.log("logando o que vai ser passado para o route:",token,savedPassword,savedEmail),navigation.navigate('ManagerHome',  {token: token, email: savedEmail, password: savedPassword})
+      savedManager === "True" ? (console.log("logando o que vai ser passado para o route:",token,savedPassword,savedEmail),navigation.navigate('ManagerHome',  {token: token, email: savedEmail, password: savedPassword, manager: 'True'})
 
       ) : (
-        navigation.navigate('Homescreen', {token: token, email: savedEmail, password: savedPassword})
+        navigation.navigate('Homescreen', {token: token, email: savedEmail, password: savedPassword, manager: 'False'})
       )
     }
 
@@ -120,7 +120,7 @@ function refresh(){
         err.status = response.status
         throw err}
         return response.json()})
-    .then(result => result.manager ? ( save("email", email),save("password", password), save("token", result.access_token), save("manager", "True") ,navigation.navigate('ManagerHome',  {token: token, email: savedEmail, password: password, onGoBack: () => refresh()})) : (save("email", email),save("password", password), save("manager", "False", save("token", result)),navigation.navigate('Homescreen', {token: result, user: email, onGoBack: () => refresh()})))
+    .then(result => result.manager ? ( save("email", email),save("password", password), save("token", result.access_token), save("manager", "True") ,navigation.navigate('ManagerHome',  {token: token, email: email, password: password, manager: 'True', onGoBack: () => refresh()})) : (save("email", email),save("password", password), save("manager", "False", save("token", result)),navigation.navigate('Homescreen', {manager: 'False',token: result, user: email, onGoBack: () => refresh()})))
     .catch(error => {console.log(error), error.status == 403 ? Alert.alert("Usuario ou Senha Incorreta") : (Alert.alert("Impossivel Conectar ao servidor")) });
     }
     

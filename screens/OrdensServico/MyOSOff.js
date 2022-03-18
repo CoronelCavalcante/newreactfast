@@ -19,8 +19,8 @@ export default function MyOSOff({route , navigation} ) {
 
     // const [isLoading, setLoading] = useState(true);
     // const [OS, setOS] = useState([]);
-    const [savedLoading, setSavedLoading] = useState(true)
-    const [savedOS, setSavedOs] = useState([]);
+    const [savedLoading, setSavedLoading] = useState(true);
+    const savedOS = route.params.myos;
 
     // const storeData = async (value) => {
     //   try {
@@ -30,22 +30,22 @@ export default function MyOSOff({route , navigation} ) {
     //     console.log("Erro ao salver.",e)
     //   }
     // }
-    const getData = async () => {
-      try {
-        const jsonValue = await AsyncStorage.getItem('@myos'+route.params.user)
-        if (jsonValue !== null) {
-          setSavedOs(JSON.parse(jsonValue))
-          return(setSavedLoading(false))
-        }
-        else{
-          return(console.log('nodata'))
-        }
-        ;
-      } catch(e) {
-        console.log("ERROR NO GET DATA: ",e)
-      }
-    }
-    useEffect(() => {getData()})
+    // const getData = async () => {
+    //   try {
+    //     const jsonValue = await AsyncStorage.getItem('@myos'+route.params.user)
+    //     if (jsonValue !== null) {
+    //       setSavedOs(JSON.parse(jsonValue))
+    //       return(setSavedLoading(false))
+    //     }
+    //     else{
+    //       return(console.log('nodata'))
+    //     }
+    //     ;
+    //   } catch(e) {
+    //     console.log("ERROR NO GET DATA: ",e)
+    //   }
+    // }
+    // useEffect(() => {getData()})
     
 
 
@@ -82,14 +82,14 @@ export default function MyOSOff({route , navigation} ) {
 
   return (
     <View style={styles.container}>
-          {savedLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
-                (
+          
+               
                     
                     <> 
                      <View>
                          <Text style={styles.topo}>Ordem de Servicos:</Text>
                          <Button onPress={() => navigation.navigate('AllMyOSModal',{OS: savedOS, token: route.params.token })} title="Ver Ordens concluidas"/>
-
+                    
       
                          <FlatList
                         data={savedOS}
@@ -105,7 +105,7 @@ export default function MyOSOff({route , navigation} ) {
                      
                 </>
                 
-                )}
+                
 
     </View>
   );

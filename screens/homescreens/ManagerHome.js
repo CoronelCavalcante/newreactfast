@@ -22,7 +22,7 @@ export default function ManagerHome( {route , navigation}) {
     const [savedLoading, setSavedLoading] = useState(true);
     const [date, setDate] = useState();
     const [espera, setEspera] = useState(true);
-
+    const minute_ms= 300000;
     const storeData = async (value) => {
       try {
         const jsonValue = JSON.stringify(value);
@@ -36,16 +36,16 @@ export default function ManagerHome( {route , navigation}) {
       }
     }
 
-    async function getToken(){
-      let result = await SecureStore.getItemAsync("token");
-      if (result){
-        setSavedToken(result)
-        console.log("token no saved token:", savedToken)
+    // async function getToken(){
+    //   let result = await SecureStore.getItemAsync("token");
+    //   if (result){
+    //     setSavedToken(result)
+    //     console.log("token no saved token:", savedToken)
 
-      } else{
-        console.log("else do getToken")
-      }
-    }
+    //   } else{
+    //     console.log("else do getToken")
+    //   }
+    // }
 
 
 
@@ -112,18 +112,18 @@ export default function ManagerHome( {route , navigation}) {
       
   };
 
-  async function mecherToken() {
-    // const keys = ["email", "manager", "token"]
-    try {
-      SecureStore.setItemAsync("token", "token trocado para nao valido")
-      console.log("token trocado para nao valido")
-    } catch(e) {
-      // clear error
-      console.log(e)
-    }
+  // async function mecherToken() {
+  //   // const keys = ["email", "manager", "token"]
+  //   try {
+  //     SecureStore.setItemAsync("token", "token trocado para nao valido")
+  //     console.log("token trocado para nao valido")
+  //   } catch(e) {
+  //     // clear error
+  //     console.log(e)
+  //   }
   
-    console.log('Done.')
-  }
+  //   console.log('Done.')
+  // }
 
   async function clearAll() {
     // const keys = ["email", "manager", "token"]
@@ -161,9 +161,18 @@ export default function ManagerHome( {route , navigation}) {
       console.log("ERROR NO GET DATA: ",e)
     }
   }
+  //timer assim nao fucionar pq ficar so conta se o app tiver no foreground ver outra solução para ficar atualizando os dados
+  // setInterval(
+  // () =>{
+  // console.log("INTERVAL"),
+  // setSavedLoading(true),
+  // console.log("SETsavedloading"),
+  // setEspera(true),
+  // setLoading(true)}, minute_ms)
   
-
   savedLoading ? (console.log("loading saved"),  getData()) : ( isLoading ? (APICall()) : (espera ? (getData(),setEspera(false)) : (console.log("completou o isLoading e o espera"))));
+  
+  
   
   return (
     <View style={styles.container}>
@@ -174,9 +183,11 @@ export default function ManagerHome( {route , navigation}) {
 
 
       <View>
-      <Text  style={styles.topo}>Dados Armazenados {savedLoading ? ("carregando") : ("prontos")}
-      {'\n'}Estado do banco {espera ? ("Sincronizando") : ("Sincronização concluida")}
-      {'\n'}Logado como: {route.params.email},data dos dados:{date} </Text>  
+      <Text  style={styles.topo}>
+      Usuario: {route.params.email}{'\n'}
+      Dados Armazenados: {savedLoading ? ("carregando") : ("prontos")}
+      {'\n'}Estado do banco: {espera ? ("Sincronizando...") : ("Sincronização concluida")}
+      {'\n'}Data dados:{date} </Text>  
       </View>
 
       {/* <View style={styles.inputView}>
@@ -185,25 +196,30 @@ export default function ManagerHome( {route , navigation}) {
         </TouchableOpacity>
       </View> */}
      
-      <View style={styles.inputView}>
+      {/* <View style={styles.inputView}>
       <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('FastListarOS', {token: route.params.token})}}>
       <Text style={[{color: 'white'}]}>Ordens de Servicos</Text>
         </TouchableOpacity>
+      </View> */}
+      <View style={styles.inputView}>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('MyOsOff', {myos: savedOS.minhas_ordens, token: savedToken, manager: route.params.manager})}}>
+      <Text style={[{color: 'white'}]}>Minhas Ordens</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('ListarOsOff', {token: route.params.token})}}>
-      <Text style={[{color: 'white'}]}>Ordens de Servicos OFFLINE</Text>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('ListarOsOff', {abertas: savedOS.ordens_abertas, token: savedToken, manager: route.params.manager})}}>
+      <Text style={[{color: 'white'}]}>Ordens de Servicos</Text>
         </TouchableOpacity>
       </View>
       
-      <View style={styles.inputView}>
+      {/* <View style={styles.inputView}>
       <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('OsDist', {token: route.params.token})}}>
       <Text style={[{color: 'white'}]}>Ordens Distribuidas</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('OsDistOff', {token: route.params.token})}}>
-      <Text style={[{color: 'white'}]}>Ordens Distribuidas OFFLINE</Text>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('OsDistOff', {dist: savedOS.ordens_dist, token: savedToken,manager: route.params.manager})}}>
+      <Text style={[{color: 'white'}]}>Ordens Distribuidas</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.inputView}>
@@ -212,18 +228,14 @@ export default function ManagerHome( {route , navigation}) {
         </TouchableOpacity>
       </View>
       
-      <View style={styles.inputView}>
+      {/* <View style={styles.inputView}>
       <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('MyOS', {token: route.params.token})}}>
       <Text style={[{color: 'white'}]}>Minhas Ordens</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
+      
       <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('MyOsOff', {token: route.params.token})}}>
-      <Text style={[{color: 'white'}]}>Minhas Ordens OFFLINE</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('ListaEmp', {token: route.params.token})}}>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('ListaEmp', {token: route.params.token, manager: route.params.manager})}}>
       <Text style={[{color: 'white'}]}>Lista de funcionarios</Text>
         </TouchableOpacity>
       </View>
@@ -304,8 +316,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#1676DD",
   },
   topo: {
-    height: 100,
-    padding: 1,
+    
+    padding: 2,
     color: 'black',
     fontSize: 18
 

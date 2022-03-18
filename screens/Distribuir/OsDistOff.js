@@ -20,39 +20,40 @@ export default function OsDistOff({route , navigation} ) {
     const [isLoading, setLoading] = useState(true);
     const [OS, setOS] = useState([]);
 
-    const [savedOS, setSavedOs] = useState([]);
+    const savedOS = route.params.dist;
     const [savedLoading, setSavedLoading] = useState(true)
 
-    const storeData = async (value) => {
-      try {
-        const jsonValue = JSON.stringify(value)
-        await AsyncStorage.setItem('@dist', jsonValue)
-      } catch (e) {
-        console.log("Erro ao salver.",e)
-      }
-    }
-    const getData = async () => {
-      try {
-        const jsonValue = await AsyncStorage.getItem('@dist')
-        if (jsonValue !== null) {
-          setSavedOs(JSON.parse(jsonValue))
-          return(setSavedLoading(false))
-        }
-        else{
-          return(console.log('nodata'))
-        }
-        ;
-      } catch(e) {
-        console.log("ERROR NO GET DATA: ",e)
-      }
-    }
+    // const storeData = async (value) => {
+    //   try {
+    //     const jsonValue = JSON.stringify(value)
+    //     await AsyncStorage.setItem('@dist', jsonValue)
+    //   } catch (e) {
+    //     console.log("Erro ao salver.",e)
+    //   }
+    // }
+    // const getData = async () => {
+    //   try {
+    //     const jsonValue = await AsyncStorage.getItem('@dist')
+    //     if (jsonValue !== null) {
+    //       setSavedOs(JSON.parse(jsonValue))
+    //       return(setSavedLoading(false))
+    //     }
+    //     else{
+    //       return(console.log('nodata'))
+    //     }
+    //     ;
+    //   } catch(e) {
+    //     console.log("ERROR NO GET DATA: ",e)
+    //   }
+    // }
    
 
 
 
 
       function Listar(obj) {
-        return(          
+        return(
+                 
           <TouchableOpacity onPress={() => navigation.navigate('DetalhesDist',{obj: obj, token: route.params.token })}>
             <Text style={styles.cell}>   
               <Text style={{fontWeight: 'bold'}}>ID Ordem: </Text> {obj.ordem_servico.id}
@@ -72,13 +73,13 @@ export default function OsDistOff({route , navigation} ) {
     
         }
         ;
-        getData();
+        // getData();
 
 
   return (
     <View style={styles.container}>
-         {savedLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
-                (                    
+         
+                                  
                     <> 
 
                      <View>
@@ -88,9 +89,8 @@ export default function OsDistOff({route , navigation} ) {
                          <FlatList
                         data={savedOS}
                         renderItem={({item, index})=>
-                        item.completed ? (console.log("")) : ( Listar(item, index))
-                
-                            }
+                        item.distribuida.completed ? (console.log("true")) : (Listar(item, index))
+                        }
               
                         />
                          
@@ -98,7 +98,7 @@ export default function OsDistOff({route , navigation} ) {
                      
                 </>
                 
-                )}
+                
 
     </View>
   );

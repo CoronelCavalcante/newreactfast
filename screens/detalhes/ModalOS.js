@@ -11,6 +11,7 @@ import {
   FlatList,
   ActivityIndicator
 } from "react-native";
+import * as SecureStore from 'expo-secure-store';
 import openMap from "react-native-open-maps";
 
 
@@ -20,12 +21,16 @@ import openMap from "react-native-open-maps";
 //deixando assunto e contrato como array por enquanto.
 
 export default function ModalOS({route , navigation}){
+  const [savedManager,setSavedManager] = useState("");
   var cliente = route.params.obj.cliente
   var ordem = route.params.obj.ordem_servico
   var login = route.params.obj.login
   var assunto = route.params.obj.assunto
   var contrato = route.params.obj.contrato
   var horario = 'Null'
+  console.log(route.params.token)
+
+ 
  
   switch(ordem.melhor_horario_agenda){
     case "Q":
@@ -53,13 +58,14 @@ export default function ModalOS({route , navigation}){
   }
 
   function distribuir(){
-    if(route.params.token.manager == true){
+    if(route.params.manager === 'True' ){
       return(<Button onPress={() => navigation.navigate('ModalDist',{obj: route.params.obj, token: route.params.token })} title="Distribuir OS"/>)
     }
     else{
       return ("Logado como funcionario")
     }
   };
+   
     return(
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>
@@ -101,7 +107,7 @@ export default function ModalOS({route , navigation}){
           {'\n'}
           Endereço Mac: {login?.mac}
           {'\n'}{'\n'}
-          {route.params.token.manager ? (distribuir()) : (console.log())}                {abrirNoMaps()}     
+          {route.params.manager === 'True' ? (distribuir()) : (console.log("no manager "))}                {abrirNoMaps()}     
           
 
 

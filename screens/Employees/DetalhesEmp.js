@@ -45,28 +45,31 @@ export default function DetalhesEmp({route , navigation}){
     headers: myHeaders,
     redirect: 'follow'
     };
-    
     useEffect(() => {fetch("http://168.195.212.5:8000/OS/emp/"+route.params.obj.id.toString(), requestOptions)
     .then(response => response.json())
     .then(result => setOS(result))
-    .then(OS.length!=0 ? (setLoading(false)) : (console.log("is loading ta como: ",isLoading)))
+    .then(Object.keys(OS).length > 0 ? (setLoading(false)) : (console.log("is loading ta como: ",isLoading)))
     .catch(error => console.log('error', error));})
 
 
 
 
     function Listar(obj) {
-      return(          
+      return(       
           <View>
+          <TouchableOpacity onPress={() => navigation.navigate('ModalOS',{obj: obj, token: route.params.token.access_token.toString(), manager: route.params.manager })}>
+
             <Text style={styles.cell}>   
               ID Ordem: {obj.ordem_servico.id}
               {'\n'}
               Nome do cliente: {obj.cliente.razao}
+              {'\n'}
               ordem aberta em: {obj.created_at}
-              ordem dada por: {obj.givem_by}
-              ordem completada: {obj.completed}             
+              {'\n'}
+              ordem dada por: {obj.givem_by}          
                                                         
             </Text>
+            </TouchableOpacity>
           </View>
           );
   

@@ -22,7 +22,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function ListarOsOff({route , navigation} ) {
 
     
-    const [savedOS, setSavedOs] = useState([]);
+    const savedOS = route.params.abertas
     const [savedLoading, setSavedLoading] = useState(true)
     const [date, setDate] = useState()
 
@@ -34,23 +34,23 @@ export default function ListarOsOff({route , navigation} ) {
     //     console.log("Erro ao salvar.",e)
     //   }
     // }
-    const getData = async () => {
-      try {
-        const jsonValue = await AsyncStorage.getItem('@abertas')
-        const date = await AsyncStorage.getItem('@abertasDate')
-        if (jsonValue !== null) {
-          setSavedOs(JSON.parse(jsonValue))
-          setDate(date)
-          return(setSavedLoading(false))
-        }
-        else{
-          return(console.log('nodata'))
-        }
-        ;
-      } catch(e) {
-        console.log("ERROR NO GET DATA: ",e)
-      }
-    }
+    // const getData = async () => {
+    //   try {
+    //     const jsonValue = await AsyncStorage.getItem('@abertas')
+    //     const date = await AsyncStorage.getItem('@abertasDate')
+    //     if (jsonValue !== null) {
+    //       setSavedOs(JSON.parse(jsonValue))
+    //       setDate(date)
+    //       return(setSavedLoading(false))
+    //     }
+    //     else{
+    //       return(console.log('nodata'))
+    //     }
+    //     ;
+    //   } catch(e) {
+    //     console.log("ERROR NO GET DATA: ",e)
+    //   }
+    // }
     // const getData = async () => {
     //   try {
     //     const jsonValue = await AsyncStorage.getItem('@abertas')
@@ -81,7 +81,7 @@ export default function ListarOsOff({route , navigation} ) {
 
       function Listar(obj) {
         return(          
-          <TouchableOpacity onPress={() => navigation.navigate('ModalOS',{obj: obj, token: route.params.token })}>
+          <TouchableOpacity onPress={() => navigation.navigate('ModalOS',{obj: obj, token: route.params.token,manager: route.params.manager })}>
             <Text style={styles.cell}>   
               <Text style={{fontWeight: 'bold'}}>ID da Ordem: </Text> {obj.ordem_servico.id}
               {'\n'}
@@ -101,16 +101,16 @@ export default function ListarOsOff({route , navigation} ) {
         ;
 
 
-        getData();
+        // getData();
 
   return (
     <View style={styles.container}>
-         {savedLoading ? (<View><Text>Aguarde! pode demorar até 30 segundos</Text></View>) : 
-                (
+         
+                
                     
                     <> 
                      <View>
-                         <Text style={styles.topo}>{date}Ordem de Servicos ja Salvas: {savedOS.length}</Text>
+                         <Text style={styles.topo}>Ordem de Servicos ja Salvas: {savedOS.length}</Text>
                          <FlatList
                         data={savedOS}
                         renderItem={({item, index})=>
@@ -124,7 +124,7 @@ export default function ListarOsOff({route , navigation} ) {
               
                 </>
                 
-                )}
+                
 
     </View>
   );

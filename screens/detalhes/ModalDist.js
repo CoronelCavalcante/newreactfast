@@ -20,7 +20,7 @@ export default function ModalDist({route , navigation} ) {
     const [isLoading, setLoading] = useState(true);
     const [Emp, setEmp] = useState([]);
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
+    myHeaders.append("Authorization", "Bearer "+route.params.token);
     var requestOptions = {
     method: 'GET',
     headers: myHeaders,
@@ -30,7 +30,7 @@ export default function ModalDist({route , navigation} ) {
     useEffect(() => {fetch("http://168.195.212.5:8000/users/all", requestOptions)
     .then(response => response.json())
     .then(result => setEmp(result))
-    .then(Emp.length!=0 ? (setLoading(false)) : (console.log("is loading ta como: ",isLoading)))
+    .then(Object.keys(Emp).length > 0 ? (setLoading(false)) : (console.log("is loading ta como: ",isLoading)))
     .catch(error => console.log('error', error));})
 
     function alertar(obj){
@@ -48,7 +48,8 @@ export default function ModalDist({route , navigation} ) {
 
     function distribuirOS(obj){
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
+        myHeaders.append("Authorization", "Bearer "+route.params.token);
+        
         myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify({
@@ -62,6 +63,7 @@ export default function ModalDist({route , navigation} ) {
         body: raw,
         redirect: 'follow'
         };
+        console.log(requestOptions);
 
         fetch("http://168.195.212.5:8000/OS/Dist", requestOptions)
         .then(response => response.json())
@@ -100,12 +102,12 @@ export default function ModalDist({route , navigation} ) {
 
   return (
     <View style={styles.container}>
-         {isLoading ? (<View><ActivityIndicator size={"large"}/></View>) : 
+         {isLoading ? (<View><Text>carregando lista de funcionarios</Text></View>) : 
                 (
                     
                     <> 
                      <View>
-                         <Text style={styles.topo}>Total de funcionarios {Emp.length}</Text>
+                         <Text style={styles.topo}>Total de funcionarios {Object.keys(Emp).length}</Text>
                          <FlatList
                         data={Emp}
                         renderItem={({item, index})=>
