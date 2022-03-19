@@ -120,7 +120,7 @@ function refresh(){
         err.status = response.status
         throw err}
         return response.json()})
-    .then(result => result.manager ? ( save("email", email),save("password", password), save("token", result.access_token), save("manager", "True") ,navigation.navigate('ManagerHome',  {token: token, email: email, password: password, manager: 'True', onGoBack: () => refresh()})) : (save("email", email),save("password", password), save("manager", "False", save("token", result)),navigation.navigate('Homescreen', {manager: 'False',token: result, user: email, onGoBack: () => refresh()})))
+    .then(result => result.manager ? ( save("email", email),save("password", password), save("token", result.access_token), save("manager", "True") ,navigation.navigate('ManagerHome',  {token: result.access_token, email: email, password: password, manager: 'True', onGoBack: () => refresh()})) : (save("email", email),save("password", password), save("manager", "False", save("token", result)),navigation.navigate('Homescreen', {manager: 'False',token: result, user: email, onGoBack: () => refresh()})))
     .catch(error => {console.log(error), error.status == 403 ? Alert.alert("Usuario ou Senha Incorreta") : (Alert.alert("Impossivel Conectar ao servidor")) });
     }
     
