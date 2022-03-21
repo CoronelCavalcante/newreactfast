@@ -19,7 +19,7 @@ export default function ListaEmp({route , navigation} ) {
     const [isLoading, setLoading] = useState(true);
     const [Emp, setEmp] = useState([]);
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
+    myHeaders.append("Authorization", "Bearer "+route.params.token);
     var requestOptions = {
     method: 'GET',
     headers: myHeaders,
@@ -40,7 +40,7 @@ export default function ListaEmp({route , navigation} ) {
         obj.manager == true ? (manager = 'Sim') : (manager = 'Nao');
         return(          
           
-          <TouchableOpacity onPress={() => navigation.navigate('DetalhesEmp',{obj: obj, token: route.params.token.access_token, manager: route.params.manager })}>
+          <TouchableOpacity onPress={() => navigation.navigate('DetalhesEmp',{obj: obj, token: route.params.token, manager: route.params.manager })}>
             <Text style={styles.cell}>   
               <Text style={{fontWeight: 'bold'}}>ID no banco </Text> {obj.id}
               {'\n'}

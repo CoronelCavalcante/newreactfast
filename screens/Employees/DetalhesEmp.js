@@ -22,7 +22,7 @@ export default function DetalhesEmp({route , navigation}){
  
   function deletar(){
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
+    myHeaders.append("Authorization", "Bearer "+route.params.token);
 
     var requestOptions = {
       method: 'DELETE',
@@ -39,7 +39,7 @@ export default function DetalhesEmp({route , navigation}){
     const [isLoading, setLoading] = useState(true);
     const [OS, setOS] = useState([]);
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
+    myHeaders.append("Authorization", "Bearer "+route.params.token);
     var requestOptions = {
     method: 'GET',
     headers: myHeaders,
@@ -48,7 +48,7 @@ export default function DetalhesEmp({route , navigation}){
     useEffect(() => {fetch("http://168.195.212.5:8000/OS/emp/"+route.params.obj.id.toString(), requestOptions)
     .then(response => response.json())
     .then(result => setOS(result))
-    .then(Object.keys(OS).length > 0 ? (setLoading(false)) : (console.log("is loading ta como: ",isLoading)))
+    .then(Object.keys(OS).length > 0 ? (OS.detail ? (Alert.alert("token invalido"), navigation.goBack()) : setLoading(false)) : (console.log("is loading ta como: ",isLoading)))
     .catch(error => console.log('error', error));})
 
 
@@ -57,7 +57,7 @@ export default function DetalhesEmp({route , navigation}){
     function Listar(obj) {
       return(       
           <View>
-          <TouchableOpacity onPress={() => navigation.navigate('ModalOS',{obj: obj, token: route.params.token.access_token.toString(), manager: route.params.manager })}>
+          <TouchableOpacity onPress={() => navigation.navigate('ModalOS',{obj: obj, token: route.params.token.toString(), manager: route.params.manager })}>
 
             <Text style={styles.cell}>   
               ID Ordem: {obj.ordem_servico.id}
@@ -109,7 +109,7 @@ export default function DetalhesEmp({route , navigation}){
                         <FlatList
                         data={OS}
                         renderItem={({item, index})=>
-                        item.completed ? (console.log("")) : (
+                        item.completed ? (console.log("logando item completed:", item.completed)) : (
                         Listar(item, index))
                 
                             }

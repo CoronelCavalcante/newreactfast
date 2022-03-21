@@ -223,7 +223,7 @@ export default function ManagerHome( {route , navigation}) {
         </TouchableOpacity>
       </View>
       <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('CreateUser', {token: route.params.token})}}>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('CreateUser', {token: savedToken})}}>
       <Text style={[{color: 'white'}]}>Novo Funcionario</Text>
         </TouchableOpacity>
       </View>
@@ -235,7 +235,7 @@ export default function ManagerHome( {route , navigation}) {
       </View> */}
       
       <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('ListaEmp', {token: route.params.token, manager: route.params.manager})}}>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('ListaEmp', {token: savedToken, manager: route.params.manager})}}>
       <Text style={[{color: 'white'}]}>Lista de funcionarios</Text>
         </TouchableOpacity>
       </View>
