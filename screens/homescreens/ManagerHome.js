@@ -16,7 +16,7 @@ import * as SecureStore from 'expo-secure-store';
 export default function ManagerHome( {route , navigation}) {
     const [isLoading, setLoading] = useState(true);
     const [OS, setOS] = useState([]);
-    const [savedToken, setSavedToken] = useState(route.params.token.access_token);
+    const [savedToken, setSavedToken] = useState(route.params.token);
     const [loadingNT, setLoadingNT] = useState(true);   
     const [savedOS, setSavedOs] = useState([]);
     const [savedLoading, setSavedLoading] = useState(true);
@@ -61,7 +61,7 @@ export default function ManagerHome( {route , navigation}) {
     };
     fetch("http://168.195.212.5:8000/OS/Manager", requestOptions)
     .then(response => response.json())
-    .then(result => {result.detail ==="could not validate credentials" ? (console.log("token expirado ", result), loadingNT ? (newToken()):(console.log("new token false"))) : ( setOS(result))})
+    .then(result => {result.detail ==="could not validate credentials" ? (console.log("token expirado ", result), loadingNT ? (newToken()):(console.log("new token false"))) : (result.detail ? (console.log("result tem detil", result.detail)):  (setOS(result)))})
     .then(Object.keys(OS).length > 0 ? (console.log("SALVANDO A OS"),setLoading(false), storeData(OS)) : (console.log("false OS length ", Object.keys(OS).length)))
     .catch(error => console.log('error', error))
     }
@@ -202,12 +202,12 @@ export default function ManagerHome( {route , navigation}) {
         </TouchableOpacity>
       </View> */}
       <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('MyOsOff', {myos: savedOS.minhas_ordens, token: savedToken, manager: route.params.manager})}}>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{Object.keys(savedOS).length > 0 ? (navigation.navigate('MyOsOff', {myos: savedOS.minhas_ordens, token: savedToken, manager: route.params.manager})): (Alert.alert("Carregando dados"))}}>
       <Text style={[{color: 'white'}]}>Minhas Ordens</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('ListarOsOff', {abertas: savedOS.ordens_abertas, token: savedToken, manager: route.params.manager})}}>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{Object.keys(savedOS).length > 0 ? (navigation.navigate('ListarOsOff', {abertas: savedOS.ordens_abertas, token: savedToken, manager: route.params.manager})) : (Alert.alert("Carregando dados"))}}>
       <Text style={[{color: 'white'}]}>Ordens de Servicos</Text>
         </TouchableOpacity>
       </View>
@@ -218,7 +218,7 @@ export default function ManagerHome( {route , navigation}) {
         </TouchableOpacity>
       </View> */}
       <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('OsDistOff', {dist: savedOS.ordens_dist, token: savedToken,manager: route.params.manager})}}>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{Object.keys(savedOS).length > 0 ? (navigation.navigate('OsDistOff', {dist: savedOS.ordens_dist, token: savedToken,manager: route.params.manager})) : (Alert.alert("Carregando dados"))}}>
       <Text style={[{color: 'white'}]}>Ordens Distribuidas</Text>
         </TouchableOpacity>
       </View>
