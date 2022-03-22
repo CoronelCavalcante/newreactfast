@@ -10,6 +10,20 @@ import {
 // import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
+import MyTask from "../../MyTask";
+
+
+const registerMyTask = () =>{
+  MyTask.register()
+    .then(()=> console.log("task registered"))
+    .catch(error => console.log(error))
+}
+
+const unRegisterMyTask = () =>{
+  MyTask.unregister()
+    .then(()=> console.log("task unregistered"))
+    .catch(error => console.log(error))
+}
 
 
 
@@ -23,6 +37,8 @@ export default function ManagerHome( {route , navigation}) {
     const [date, setDate] = useState();
     const [espera, setEspera] = useState(true);
     const minute_ms= 300000;
+
+    
     const storeData = async (value) => {
       try {
         const jsonValue = JSON.stringify(value);
@@ -185,9 +201,9 @@ export default function ManagerHome( {route , navigation}) {
       <View>
       <Text  style={styles.topo}>
       Usuario: {route.params.email}{'\n'}
-      Dados Armazenados: {savedLoading ? ("carregando") : ("prontos")}
+      Dados Armazenados: {savedLoading ? ("carregando") : (Object.keys(savedOS).length > 0 ?("Prontos") :("Nao ha dados"))}
       {'\n'}Estado do banco: {espera ? ("Sincronizando...") : ("Sincronização concluida")}
-      {'\n'}Data dados:{date} </Text>  
+      {'\n'}Ultima Sincronizacao: {date ? (date): ("Carregando")} </Text>  
       </View>
 
       {/* <View style={styles.inputView}>
@@ -225,6 +241,16 @@ export default function ManagerHome( {route , navigation}) {
       <View style={styles.inputView}>
       <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('CreateUser', {token: savedToken})}}>
       <Text style={[{color: 'white'}]}>Novo Funcionario</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.inputView}>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{registerMyTask()}}>
+      <Text style={[{color: 'white'}]}>Registrar Task</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.inputView}>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{unRegisterMyTask()}}>
+      <Text style={[{color: 'white'}]}>UNRegistrar Task</Text>
         </TouchableOpacity>
       </View>
       

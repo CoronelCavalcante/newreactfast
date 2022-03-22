@@ -27,7 +27,7 @@ function App() {
   return(
     <NavigationContainer>
         <Stack.Navigator screenOptions={{ gestureEnbled: false}}>
-            <Stack.Screen name= "Login" component={Login} options={{title: 'Login'}} />
+            <Stack.Screen name= "Login" component={Login} options={{title: 'Login', headerShown: false}} />
             <Stack.Screen name= "Homescreen" component={Homescreen} options={{title: 'Home Employee', headerShown: false}} />
             <Stack.Screen name= "ManagerHome" component={ManagerHome} options={{title: 'Home Manager', headerShown: false}} />
             <Stack.Screen name= "CreateUser" component={CreateUser} options={{title: 'Adicionar Novo Funcionario'}} />
