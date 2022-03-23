@@ -36,14 +36,15 @@ export default function ManagerHome( {route , navigation}) {
     const [savedLoading, setSavedLoading] = useState(true);
     const [date, setDate] = useState();
     const [espera, setEspera] = useState(true);
-    const minute_ms= 300000;
+    console.log("LOGANDO O QUE CHEGOU NO MANAGER HOME: ", route.params)
 
     
     const storeData = async (value) => {
       try {
+        console.log("STORE DATA FOI ACIONADO AGORA")
         const jsonValue = JSON.stringify(value);
         await AsyncStorage.setItem('@ManagerComplete', jsonValue);
-         await AsyncStorage.setItem('@APIDate', String(new Date()));
+        await AsyncStorage.setItem('@APIDate', String(new Date()));
          //console.log("logando um date qualquer:", String(new Date())  )
          //console.log("device info:", DeviceInfo.getTimezone());
 
@@ -65,22 +66,35 @@ export default function ManagerHome( {route , navigation}) {
 
 
 
-    async function APICall(){
-    console.log("API CAL ACIONADA")
-    var myHeaders = new Headers();
+    // async function APICall(){
+    // console.log("API CAL ACIONADA")
+    // var myHeaders = new Headers();
   
-    myHeaders.append("Authorization", "Bearer " + savedToken);
-    var requestOptions = {
-    method: 'GET',
-    headers: myHeaders,
-    redirect: 'follow'
-    };
-    fetch("http://168.195.212.5:8000/OS/Manager", requestOptions)
-    .then(response => response.json())
-    .then(result => {result.detail ==="could not validate credentials" ? (console.log("token expirado ", result), loadingNT ? (newToken()):(console.log("new token false"))) : (result.detail ? (console.log("result tem detil", result.detail)):  (setOS(result)))})
-    .then(Object.keys(OS).length > 0 ? (console.log("SALVANDO A OS"),setLoading(false), storeData(OS)) : (console.log("false OS length ", Object.keys(OS).length)))
-    .catch(error => console.log('error', error))
-    }
+    // myHeaders.append("Authorization", "Bearer " + savedToken);
+    // var requestOptions = {
+    // method: 'GET',
+    // headers: myHeaders,
+    // redirect: 'follow'
+    // };
+    // fetch("http://168.195.212.5:8000/OS/Manager", requestOptions)
+    // .then(response => response.json())
+    // .then(result => {
+    //     result.detail ==="could not validate credentials" ? 
+    //       (console.log("token expirado ", result), loadingNT ? 
+    //         (newToken())
+    //         :
+    //         (console.log("Dentro do API Call, LoadingNT: ", loadingNT))
+    //       ) : 
+    //       (result.detail ? 
+    //         (console.log("result tem detail", result.detail))  
+    //         :  
+    //         (setOS(result))
+    //       )
+    //   }
+    // )
+    // .then(Object.keys(OS).length > 0 ? (console.log("SALVANDO A OS"),setLoading(false), storeData(OS)) : (console.log("false OS length ", Object.keys(OS).length)))
+    // .catch(error => console.log('error', error))
+    // }
 
     
     // async function getEmail(){
@@ -104,42 +118,30 @@ export default function ManagerHome( {route , navigation}) {
     //   }
     // }
 
-    async function newToken(){
-    console.log("buscando novo token");
-    var formdata = new FormData();
-    formdata.append("username", route.params.email);
-    formdata.append("password", route.params.password);
+  //   async function newToken(){
+  //   console.log("buscando novo token");
+  //   var formdata = new FormData();
+  //   formdata.append("username", route.params.email);
+  //   formdata.append("password", route.params.password);
     
-    var requestOptions = {
-     method: 'POST',
-    body: formdata,
-    redirect: 'follow'
-    };
-    fetch("http://168.195.212.5:8000/login", requestOptions)
-    .then(response => {if (!response.ok) {
-        // create error object and reject if not a 2xx response code COLOCAR ALERTA DE ERROR. mudar o respota token pra uma variavel pq nao pode função
-        let err = new Error("HTTP status code: " + response.status)
-        err.response = response
-        err.status = response.status
-        throw err}
-        return response.json()})
-    .then(response => {SecureStore.setItemAsync("token", response.access_token), setLoadingNT(false)})
-    .catch(error => {error.status == 403 ? console.log("Usuario ou Senha Incorreta") : (console.log("Impossivel Conectar ao servidor")) });
+  //   var requestOptions = {
+  //    method: 'POST',
+  //   body: formdata,
+  //   redirect: 'follow'
+  //   };
+  //   fetch("http://168.195.212.5:8000/login", requestOptions)
+  //   .then(response => {if (!response.ok) {
+  //       // create error object and reject if not a 2xx response code COLOCAR ALERTA DE ERROR. mudar o respota token pra uma variavel pq nao pode função
+  //       let err = new Error("HTTP status code: " + response.status)
+  //       err.response = response
+  //       err.status = response.status
+  //       throw err}
+  //       return response.json()})
+  //   .then(response => {SecureStore.setItemAsync("token", response.access_token); setLoadingNT(false)})
+  //   .catch(error => {error.status == 403 ? console.log("Usuario ou Senha Incorreta") : (console.log("Impossivel Conectar ao servidor")) });
       
-  };
+  // };
 
-  // async function mecherToken() {
-  //   // const keys = ["email", "manager", "token"]
-  //   try {
-  //     SecureStore.setItemAsync("token", "token trocado para nao valido")
-  //     console.log("token trocado para nao valido")
-  //   } catch(e) {
-  //     // clear error
-  //     console.log(e)
-  //   }
-  
-  //   console.log('Done.')
-  // }
 
   async function clearAll() {
     // const keys = ["email", "manager", "token"]
@@ -166,6 +168,7 @@ export default function ManagerHome( {route , navigation}) {
       if (jsonValue !== null) {
         setSavedOs(JSON.parse(jsonValue))
         setDate(date)
+        console.log("getData Concluido")
         return(setSavedLoading(false))
       }
       else{
@@ -186,8 +189,93 @@ export default function ManagerHome( {route , navigation}) {
   // setEspera(true),
   // setLoading(true)}, minute_ms)
   
-  savedLoading ? (console.log("loading saved"),  getData()) : ( isLoading ? (APICall()) : (espera ? (getData(),setEspera(false)) : (console.log("completou o isLoading e o espera"))));
   
+  
+  // savedLoading ? 
+  //   (console.log("loading saved"),  getData()) 
+  //   : 
+  //   ( isLoading ? 
+  //     (APICall()) 
+  //     : 
+  //     (espera ? 
+  //       (getData(),setEspera(false)) 
+  //       : 
+  //       (console.log("completou o isLoading e o espera"))
+  //     )
+  //   );
+  const APIcall = async() =>{
+    console.log("LOGANDO params API CALL", route.params);
+    try{
+      var myHeaders = new Headers();  
+      myHeaders.append("Authorization", "Bearer " + savedToken);
+      var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+      };
+      const response = await fetch("http://168.195.212.5:8000/OS/Manager", requestOptions);
+      const json = await response.json();
+      json.detail === "could not validate credentials"? (await newToken()) : (console.log("APicall NAO tem detail"))
+      return(console.log(json));
+
+    }
+    catch(e){
+      console.log("catch do APICall", e)
+    }
+  }
+  const newToken = async()=>{
+    console.log("LOGANDO params", route.params);
+    try{
+        console.log("buscando novo token");
+        var formdata = new FormData();
+        formdata.append("username", route.params.email);
+        formdata.append("password", route.params.password);
+        
+        
+        var requestOptions = {
+          method: 'POST',
+          body: formdata,
+          redirect: 'follow'
+        };
+        console.log("infos que irao para o fetch do new token:", requestOptions);
+       const response = await fetch("http://168.195.212.5:8000/login", requestOptions);
+       const json = await response.json();
+       json.detail ? (console.log("deu algum erro no new token", json)):
+       (  
+        console.log("novo token adquirido"),
+        setSavedToken(json),
+        await APIcall()
+       )
+
+
+    }
+    catch(e){
+     console.log("catch newToken ",e)
+    }
+  }  
+
+
+  const CarregarDados = async() =>{
+    console.log("LOGANDO params CARREGAR DADOS", route.params),
+    savedLoading ? (
+     
+      setSavedLoading(false),
+      await getData(),
+      await APIcall()
+      ) 
+    :
+    (
+      console.log("else dentro do carregar dados")
+    )
+  }
+    
+  
+  
+
+
+
+
+CarregarDados();
   
   
   return (
@@ -249,8 +337,8 @@ export default function ManagerHome( {route , navigation}) {
         </TouchableOpacity>
       </View>
       <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{unRegisterMyTask()}}>
-      <Text style={[{color: 'white'}]}>UNRegistrar Task</Text>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{SecureStore.setItemAsync("token", 'Token invalido para teste')}}>
+      <Text style={[{color: 'white'}]}>Invalidar token</Text>
         </TouchableOpacity>
       </View>
       

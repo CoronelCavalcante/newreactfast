@@ -72,7 +72,7 @@ export default function Login({ navigation }) {
       let result = await SecureStore.getItemAsync('password');
       if (result){
         setSavedPassword(result),
-        console.log("logando saved password", password),
+        console.log("logando saved password", savedPassword),
 
         savedEmail && savedManager && savedToken && savedPassword !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
 
@@ -86,7 +86,7 @@ export default function Login({ navigation }) {
       const token ={
         access_token: savedToken,
       };
-      savedManager === "True" ? (console.log("logando o que vai ser passado para o route:",savedToken,savedPassword,savedEmail),navigation.navigate('ManagerHome',  {token: savedToken, email: savedEmail, password: savedPassword, manager: 'True'})
+      savedManager === "True" ? (console.log("logando o que vai ser passado para o route:",savedToken,savedPassword,savedEmail),navigation.navigate('ManagerHome',  { password: savedPassword, token: savedToken, email: savedEmail, manager: 'True'})
 
       ) : (
         navigation.navigate('Homescreen', {token: savedToken, email: savedEmail, password: savedPassword, manager: 'False'})
