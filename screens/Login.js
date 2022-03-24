@@ -11,6 +11,7 @@ import {
   Alert,
 } from "react-native";
 import * as SecureStore from 'expo-secure-store';
+import { useFocusEffect } from '@react-navigation/native';
 
 
 
@@ -21,10 +22,29 @@ export default function Login({ navigation }) {
     const [savedManager, setSavedManager] = useState("");
     const [savedToken, setSavedToken] = useState("");
     const [savedPassword, setSavedPassword] = useState("");
-    getEmail();
-    getManager();
-    getToken();
-    getPassword();
+    
+      useFocusEffect(
+        React.useCallback(() =>{
+            console.log("CHEGOU NO REFRESH"),
+            setEmail(null),
+            setPassword(null),
+            setSavedEmail(""),
+            setSavedManager(""),
+            setSavedToken("")
+        },[])
+      )
+      
+  
+    const getSaved = async() =>{
+      await getEmail();
+      await getManager();
+      await getToken();
+      await getPassword();
+      savedEmail && savedManager && savedToken && savedPassword !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
+
+
+    }
+    getSaved();
     //mais facil de resolver isso é la na tela principal mesmo colocar pra chegar se tem saved email e password se tiver ja mandar pra um saved logar
 
 
@@ -36,8 +56,7 @@ export default function Login({ navigation }) {
       let result = await SecureStore.getItemAsync("email");
       if (result){
         setSavedEmail(result),
-        console.log("logando saved email", savedEmail),
-        savedEmail && savedManager && savedToken !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
+        console.log("logando saved email", savedEmail)
 
       } else{
         console.log("else do getEmail")
@@ -47,10 +66,7 @@ export default function Login({ navigation }) {
       let result = await SecureStore.getItemAsync("manager");
       if (result){
         setSavedManager(result),
-        console.log("logando saved manager", savedManager),
-        savedEmail && savedManager && savedToken && savedPassword !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
-
-
+        console.log("logando saved manager", savedManager)
       } else{
         console.log("else do getManager")
       }
@@ -59,22 +75,19 @@ export default function Login({ navigation }) {
       let result = await SecureStore.getItemAsync("token");
       if (result){
         setSavedToken(result),
-        console.log("logando saved token", savedToken),
-        savedEmail && savedManager && savedToken && savedPassword !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
+        console.log("logando saved token", savedToken)
 
 
       } else{
         console.log("else do getToken")
       }
     }
-
     async function getPassword(){
       let result = await SecureStore.getItemAsync('password');
       if (result){
         setSavedPassword(result),
-        console.log("logando saved password", savedPassword),
+        console.log("logando saved password", savedPassword)
 
-        savedEmail && savedManager && savedToken && savedPassword !== "" ? (savedLogar()) : (console.log("else do logarsaved "));
 
       } else{
         console.log("else do getPassword")
@@ -93,12 +106,7 @@ export default function Login({ navigation }) {
       )
     }
 
-function refresh(){
-  console.log("CHEGOU NO REFRESH"),
-  setSavedEmail(""),
-  setSavedManager(""),
-  setSavedToken("")
-}
+
 
     function logar(email, password){
     var formdata = new FormData();
@@ -120,15 +128,18 @@ function refresh(){
         err.status = response.status
         throw err}
         return response.json()})
-    .then(result => (result.manager ? ( save("email", email),save("password", password), save("token", result.access_token), save("manager", "True") ,navigation.navigate('ManagerHome',  {token: result.access_token, email: email, password: password, manager: 'True', onGoBack: () => refresh()}, console.log("token do logar normal: ", result.access_token))) : (save("email", email),save("password", password), save("manager", "False", save("token", result)),navigation.navigate('Homescreen', {manager: 'False',token: result.access_token, email: email, password: password, onGoBack: () => refresh()}))))
+    .then(result => (result.manager ? ( save("email", email),save("password", password), save("token", result.access_token), save("manager", "True") ,navigation.navigate('ManagerHome',  {token: result.access_token, email: email, password: password, manager: 'True'})) : (save("email", email),save("password", password), save("manager", "False", save("token", result)),navigation.navigate('Homescreen', {manager: 'False',token: result.access_token, email: email, password: password}))))
+    .then(setEmail(""),setPassword(""))
     .catch(error => {console.log(error), error.status == 403 ? Alert.alert("Usuario ou Senha Incorreta") : (Alert.alert("Impossivel Conectar ao servidor")) });
     }
     
     
 
+
+
     // <Image style={styles.image} source={require("./assets/log2.png")} />
   return (
-  
+   
     
     <View style={styles.container}> 
       <StatusBar style="auto" />

@@ -23,7 +23,7 @@ export default function CreateUser( {route , navigation}) {
     function criar(){
         
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "Bearer "+route.params.token.access_token);
+        myHeaders.append("Authorization", "Bearer "+route.params.token);
         myHeaders.append("Content-Type", "application/json");
         
         var raw = JSON.stringify({

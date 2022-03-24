@@ -36,7 +36,6 @@ export default function ManagerHome( {route , navigation}) {
     const [savedLoading, setSavedLoading] = useState(true);
     const [date, setDate] = useState();
     const [espera, setEspera] = useState(true);
-    console.log("LOGANDO O QUE CHEGOU NO MANAGER HOME: ", route.params)
 
     
     const storeData = async (value) => {
@@ -204,7 +203,6 @@ export default function ManagerHome( {route , navigation}) {
   //     )
   //   );
   const APIcall = async() =>{
-    console.log("LOGANDO params API CALL", route.params);
     try{
       var myHeaders = new Headers();  
       myHeaders.append("Authorization", "Bearer " + savedToken);
@@ -213,10 +211,11 @@ export default function ManagerHome( {route , navigation}) {
       headers: myHeaders,
       redirect: 'follow'
       };
+      console.log("fetchAPICALL");
       const response = await fetch("http://168.195.212.5:8000/OS/Manager", requestOptions);
       const json = await response.json();
-      json.detail === "could not validate credentials"? (await newToken()) : (console.log("APicall NAO tem detail"))
-      return(console.log(json));
+      json.detail === "could not validate credentials"? (await newToken(),setSavedLoading(true)) : (console.log("APIcall NAO tem detail"),setSavedOs(json),storeData(json))
+      return(console.log("apifetch completo"));
 
     }
     catch(e){
@@ -224,7 +223,6 @@ export default function ManagerHome( {route , navigation}) {
     }
   }
   const newToken = async()=>{
-    console.log("LOGANDO params", route.params);
     try{
         console.log("buscando novo token");
         var formdata = new FormData();
@@ -237,15 +235,15 @@ export default function ManagerHome( {route , navigation}) {
           body: formdata,
           redirect: 'follow'
         };
-        console.log("infos que irao para o fetch do new token:", requestOptions);
+       
        const response = await fetch("http://168.195.212.5:8000/login", requestOptions);
        const json = await response.json();
        json.detail ? (console.log("deu algum erro no new token", json)):
        (  
-        console.log("novo token adquirido"),
-        setSavedToken(json),
-        await APIcall()
-       )
+        setSavedToken(json.access_token.toString()),
+        SecureStore.setItemAsync("token", json.access_token)
+        
+      )
 
 
     }
@@ -256,16 +254,15 @@ export default function ManagerHome( {route , navigation}) {
 
 
   const CarregarDados = async() =>{
-    console.log("LOGANDO params CARREGAR DADOS", route.params),
     savedLoading ? (
-     
       setSavedLoading(false),
       await getData(),
-      await APIcall()
+      await APIcall(),
+      setEspera(false)
       ) 
     :
     (
-      console.log("else dentro do carregar dados")
+      console.log("else carregar dados")
     )
   }
     
@@ -332,8 +329,8 @@ CarregarDados();
         </TouchableOpacity>
       </View>
       <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{registerMyTask()}}>
-      <Text style={[{color: 'white'}]}>Registrar Task</Text>
+      <TouchableOpacity style={styles.TextInput} onPress={()=>{setSavedLoading(true)}}>
+      <Text style={[{color: 'white'}]}>Tentar de novo</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.inputView}>
