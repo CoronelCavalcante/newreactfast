@@ -12,7 +12,7 @@ import {
   Alert,
 } from "react-native";
 
-//METODOS POST PRA HTTP NAO FUNCIONAO NO ANDROID ATUALIZADO. VER SE RESOLVO OU SE ESPERO TER UM HTTPS.
+//usado para o funcao de cirar um usuario na banco, dando eamil e senha e determinando se deve ou nao ser um gerente
 export default function CreateUser( {route , navigation}) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -44,10 +44,6 @@ export default function CreateUser( {route , navigation}) {
         .then(response => {response.text(),console.log(response.status) ,Alert.alert("resposta", response.status == 201 ? ("Usuario Criado com sucesso"):(response.status==409? ("Email ja registrado"): ("Erro inesperado ao tentar criar usuario")))})
        .catch(error => console.log('error', error));
     }
-    // O problema é na resposta do post. ele ta fazendo a operação mas nao to conseguindo esperar pela reposta
-    
-
-    // <Image style={styles.image} source={require("./assets/log2.png")} />
   return (
     <View style={styles.container}>
      

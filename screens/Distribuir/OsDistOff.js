@@ -4,50 +4,19 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  TextInput,
   Button,
   TouchableOpacity,
-  FlatList,
-  ActivityIndicator
+  FlatList,  
 } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-
+//essa tela é usadas para monstrar ao gerente que ordem ja foram distribuidas e ainda nao foram concluidas
 export default function OsDistOff({route , navigation} ) {
-
-    const [isLoading, setLoading] = useState(true);
-    const [OS, setOS] = useState([]);
-
     const savedOS = route.params.dist;
-    const [savedLoading, setSavedLoading] = useState(true)
+    
 
-    // const storeData = async (value) => {
-    //   try {
-    //     const jsonValue = JSON.stringify(value)
-    //     await AsyncStorage.setItem('@dist', jsonValue)
-    //   } catch (e) {
-    //     console.log("Erro ao salver.",e)
-    //   }
-    // }
-    // const getData = async () => {
-    //   try {
-    //     const jsonValue = await AsyncStorage.getItem('@dist')
-    //     if (jsonValue !== null) {
-    //       setSavedOs(JSON.parse(jsonValue))
-    //       return(setSavedLoading(false))
-    //     }
-    //     else{
-    //       return(console.log('nodata'))
-    //     }
-    //     ;
-    //   } catch(e) {
-    //     console.log("ERROR NO GET DATA: ",e)
-    //   }
-    // }
-   
-
+    
 
 
 
@@ -73,7 +42,6 @@ export default function OsDistOff({route , navigation} ) {
     
         }
         ;
-        // getData();
 
 
   return (
@@ -89,7 +57,7 @@ export default function OsDistOff({route , navigation} ) {
                          <FlatList
                         data={savedOS}
                         renderItem={({item, index})=>
-                        item.distribuida.completed ? (console.log("true")) : (Listar(item, index))
+                        item.distribuida.completed ? (console.log("")) : (Listar(item, index))
                         }
               
                         />

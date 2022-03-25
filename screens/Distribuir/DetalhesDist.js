@@ -1,20 +1,16 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
   Text,
-  View,
-  Image,
-  TextInput,
-  Button,
-  TouchableOpacity,
-  FlatList,
-  ActivityIndicator
+  View,  
+  Button,  
 } from "react-native";
 import openMap from "react-native-open-maps";
 
+//essa tela mostra deltalhes de uma OS que ja foi distribuida para um funcionario
+//daqui o usuario pode ver a localização da OS no google maps ou caso gerente distribuir a ordem para outro funcionario
 
-//supostamente nao tem problema se o cliente nao tem login mas ainda falta teste
+//a fazer: melhorar o CSS para melhorar a leitura da tela
 export default function DetalhesDist({route , navigation}){
   var cliente = route.params.obj.cliente
   var ordem = route.params.obj.ordem_servico

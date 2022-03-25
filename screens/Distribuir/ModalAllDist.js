@@ -12,7 +12,7 @@ import {
   ActivityIndicator
 } from "react-native";
 
-
+//essa tela é a mesma que OsDistOFf so que ela nao esconde as que ja foram concluidas, exibindo todas
 
 export default function ModalAllDist({route , navigation} ) {
 

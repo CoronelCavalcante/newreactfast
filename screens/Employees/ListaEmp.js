@@ -4,16 +4,12 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  TextInput,
-  Button,
   TouchableOpacity,
-  FlatList,
-  ActivityIndicator
+  FlatList,  
 } from "react-native";
 
 
-
+//essa tela é usada para listar os funcionarios no Banco de dados
 export default function ListaEmp({route , navigation} ) {
 
     const [isLoading, setLoading] = useState(true);

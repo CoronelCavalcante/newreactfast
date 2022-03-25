@@ -4,12 +4,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  TextInput,
-  Button,
   TouchableOpacity,
-  FlatList,
-  ActivityIndicator
+  FlatList,  
 } from "react-native";
 
 

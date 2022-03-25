@@ -7,31 +7,31 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-// import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
-import MyTask from "../../MyTask";
+
+//parte ainda em teste para tarefas no Background
+// import MyTask from "../../MyTask";
 
 
-const registerMyTask = () =>{
-  MyTask.register()
-    .then(()=> console.log("task registered"))
-    .catch(error => console.log(error))
-}
+// const registerMyTask = () =>{
+//   MyTask.register()
+//     .then(()=> console.log("task registered"))
+//     .catch(error => console.log(error))
+// }
 
-const unRegisterMyTask = () =>{
-  MyTask.unregister()
-    .then(()=> console.log("task unregistered"))
-    .catch(error => console.log(error))
-}
+// const unRegisterMyTask = () =>{
+//   MyTask.unregister()
+//     .then(()=> console.log("task unregistered"))
+//     .catch(error => console.log(error))
+// }
+
+
 
 
 
 export default function ManagerHome( {route , navigation}) {
-    const [isLoading, setLoading] = useState(true);
-    const [OS, setOS] = useState([]);
     const [savedToken, setSavedToken] = useState(route.params.token);
-    const [loadingNT, setLoadingNT] = useState(true);   
     const [savedOS, setSavedOs] = useState([]);
     const [savedLoading, setSavedLoading] = useState(true);
     const [date, setDate] = useState();
@@ -44,106 +44,12 @@ export default function ManagerHome( {route , navigation}) {
         const jsonValue = JSON.stringify(value);
         await AsyncStorage.setItem('@ManagerComplete', jsonValue);
         await AsyncStorage.setItem('@APIDate', String(new Date()));
-         //console.log("logando um date qualquer:", String(new Date())  )
-         //console.log("device info:", DeviceInfo.getTimezone());
-
       } catch (e) {
         console.log("Erro ao salvar.",e)
       }
     }
 
-    // async function getToken(){
-    //   let result = await SecureStore.getItemAsync("token");
-    //   if (result){
-    //     setSavedToken(result)
-    //     console.log("token no saved token:", savedToken)
-
-    //   } else{
-    //     console.log("else do getToken")
-    //   }
-    // }
-
-
-
-    // async function APICall(){
-    // console.log("API CAL ACIONADA")
-    // var myHeaders = new Headers();
-  
-    // myHeaders.append("Authorization", "Bearer " + savedToken);
-    // var requestOptions = {
-    // method: 'GET',
-    // headers: myHeaders,
-    // redirect: 'follow'
-    // };
-    // fetch("http://168.195.212.5:8000/OS/Manager", requestOptions)
-    // .then(response => response.json())
-    // .then(result => {
-    //     result.detail ==="could not validate credentials" ? 
-    //       (console.log("token expirado ", result), loadingNT ? 
-    //         (newToken())
-    //         :
-    //         (console.log("Dentro do API Call, LoadingNT: ", loadingNT))
-    //       ) : 
-    //       (result.detail ? 
-    //         (console.log("result tem detail", result.detail))  
-    //         :  
-    //         (setOS(result))
-    //       )
-    //   }
-    // )
-    // .then(Object.keys(OS).length > 0 ? (console.log("SALVANDO A OS"),setLoading(false), storeData(OS)) : (console.log("false OS length ", Object.keys(OS).length)))
-    // .catch(error => console.log('error', error))
-    // }
-
-    
-    // async function getEmail(){
-    //   let result = await SecureStore.getItemAsync("email");
-    //   if (result){
-    //     console.log("true do get email" , result)
-    //     return(result)
-
-    //   } else{
-    //     console.log("else do getEmail")
-    //   }
-    // }
-    // async function getPassword(){
-    //   let result = await SecureStore.getItemAsync("password");
-    //   if (result){
-    //     console.log("true do get password", result)
-    //     return(result)
-
-    //   } else{
-    //     console.log("else do getEmail")
-    //   }
-    // }
-
-  //   async function newToken(){
-  //   console.log("buscando novo token");
-  //   var formdata = new FormData();
-  //   formdata.append("username", route.params.email);
-  //   formdata.append("password", route.params.password);
-    
-  //   var requestOptions = {
-  //    method: 'POST',
-  //   body: formdata,
-  //   redirect: 'follow'
-  //   };
-  //   fetch("http://168.195.212.5:8000/login", requestOptions)
-  //   .then(response => {if (!response.ok) {
-  //       // create error object and reject if not a 2xx response code COLOCAR ALERTA DE ERROR. mudar o respota token pra uma variavel pq nao pode função
-  //       let err = new Error("HTTP status code: " + response.status)
-  //       err.response = response
-  //       err.status = response.status
-  //       throw err}
-  //       return response.json()})
-  //   .then(response => {SecureStore.setItemAsync("token", response.access_token); setLoadingNT(false)})
-  //   .catch(error => {error.status == 403 ? console.log("Usuario ou Senha Incorreta") : (console.log("Impossivel Conectar ao servidor")) });
-      
-  // };
-
-
   async function clearAll() {
-    // const keys = ["email", "manager", "token"]
     try {
       await SecureStore.deleteItemAsync("email"),
       await SecureStore.deleteItemAsync("password"),
@@ -179,29 +85,7 @@ export default function ManagerHome( {route , navigation}) {
       console.log("ERROR NO GET DATA: ",e)
     }
   }
-  //timer assim nao fucionar pq ficar so conta se o app tiver no foreground ver outra solução para ficar atualizando os dados
-  // setInterval(
-  // () =>{
-  // console.log("INTERVAL"),
-  // setSavedLoading(true),
-  // console.log("SETsavedloading"),
-  // setEspera(true),
-  // setLoading(true)}, minute_ms)
   
-  
-  
-  // savedLoading ? 
-  //   (console.log("loading saved"),  getData()) 
-  //   : 
-  //   ( isLoading ? 
-  //     (APICall()) 
-  //     : 
-  //     (espera ? 
-  //       (getData(),setEspera(false)) 
-  //       : 
-  //       (console.log("completou o isLoading e o espera"))
-  //     )
-  //   );
   const APIcall = async() =>{
     try{
       var myHeaders = new Headers();  
@@ -289,19 +173,9 @@ CarregarDados();
       Dados Armazenados: {savedLoading ? ("carregando") : (Object.keys(savedOS).length > 0 ?("Prontos") :("Nao ha dados"))}
       {'\n'}Estado do banco: {espera ? ("Sincronizando...") : ("Sincronização concluida")}
       {'\n'}Ultima Sincronizacao: {date ? (date): ("Carregando")} </Text>  
-      </View>
-
-      {/* <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{mecherToken()}}>
-      <Text style={[{color: 'white'}]}>mecher token</Text>
-        </TouchableOpacity>
-      </View> */}
+      </View> 
      
-      {/* <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('FastListarOS', {token: route.params.token})}}>
-      <Text style={[{color: 'white'}]}>Ordens de Servicos</Text>
-        </TouchableOpacity>
-      </View> */}
+      
       <View style={styles.inputView}>
       <TouchableOpacity style={styles.TextInput} onPress={()=>{Object.keys(savedOS).length > 0 ? (navigation.navigate('MyOsOff', {myos: savedOS.minhas_ordens, token: savedToken, manager: route.params.manager})): (Alert.alert("Carregando dados"))}}>
       <Text style={[{color: 'white'}]}>Minhas Ordens</Text>
@@ -312,12 +186,7 @@ CarregarDados();
       <Text style={[{color: 'white'}]}>Ordens de Servicos</Text>
         </TouchableOpacity>
       </View>
-      
-      {/* <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('OsDist', {token: route.params.token})}}>
-      <Text style={[{color: 'white'}]}>Ordens Distribuidas</Text>
-        </TouchableOpacity>
-      </View> */}
+     
       <View style={styles.inputView}>
       <TouchableOpacity style={styles.TextInput} onPress={()=>{Object.keys(savedOS).length > 0 ? (navigation.navigate('OsDistOff', {dist: savedOS.ordens_dist, token: savedToken,manager: route.params.manager})) : (Alert.alert("Carregando dados"))}}>
       <Text style={[{color: 'white'}]}>Ordens Distribuidas</Text>
@@ -328,22 +197,8 @@ CarregarDados();
       <Text style={[{color: 'white'}]}>Novo Funcionario</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{setSavedLoading(true)}}>
-      <Text style={[{color: 'white'}]}>Tentar de novo</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{SecureStore.setItemAsync("token", 'Token invalido para teste')}}>
-      <Text style={[{color: 'white'}]}>Invalidar token</Text>
-        </TouchableOpacity>
-      </View>
       
-      {/* <View style={styles.inputView}>
-      <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('MyOS', {token: route.params.token})}}>
-      <Text style={[{color: 'white'}]}>Minhas Ordens</Text>
-        </TouchableOpacity>
-      </View> */}
+      
       
       <View style={styles.inputView}>
       <TouchableOpacity style={styles.TextInput} onPress={()=>{navigation.navigate('ListaEmp', {token: savedToken, manager: route.params.manager})}}>

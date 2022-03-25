@@ -4,16 +4,13 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  TextInput,
-  Button,
   Alert ,
   TouchableOpacity,
-  FlatList,
-  ActivityIndicator
+  FlatList, 
 } from "react-native";
 
-
+//essa tela é acessana quando o gerente toca na funcao distribuir OS, ela faz o request para APi pegar lista de funcionarios e
+//os exibe para que possa selecionar quem recebera a OS
 
 export default function ModalDist({route , navigation} ) {
 

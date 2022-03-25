@@ -9,10 +9,7 @@ import {
   Button,
   TouchableOpacity,
   FlatList,
-  ActivityIndicator,
-  Alert
 } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -23,62 +20,6 @@ export default function ListarOsOff({route , navigation} ) {
 
     
     const savedOS = route.params.abertas
-    const [savedLoading, setSavedLoading] = useState(true)
-    const [date, setDate] = useState()
-
-    // const storeData = async (value) => {
-    //   try {
-    //     const jsonValue = JSON.stringify(value)
-    //     await AsyncStorage.setItem('@abertas', jsonValue)
-    //   } catch (e) {
-    //     console.log("Erro ao salvar.",e)
-    //   }
-    // }
-    // const getData = async () => {
-    //   try {
-    //     const jsonValue = await AsyncStorage.getItem('@abertas')
-    //     const date = await AsyncStorage.getItem('@abertasDate')
-    //     if (jsonValue !== null) {
-    //       setSavedOs(JSON.parse(jsonValue))
-    //       setDate(date)
-    //       return(setSavedLoading(false))
-    //     }
-    //     else{
-    //       return(console.log('nodata'))
-    //     }
-    //     ;
-    //   } catch(e) {
-    //     console.log("ERROR NO GET DATA: ",e)
-    //   }
-    // }
-    // const getData = async () => {
-    //   try {
-    //     const jsonValue = await AsyncStorage.getItem('@abertas')
-    //     return jsonValue != null ? JSON.parse(jsonValue) : null;
-    //   } catch(e) {
-    //     // error reading value
-    //   }
-    // }
-    // // console.log(getSaved)
-    // async function save(key, value){
-    //   await SecureStore.setItemAsync(key, value)
-    // }
-
-    // async function getSaved(){
-    //   let result = await SecureStore.getItemAsync('Abertas');
-    //   if (result){
-    //     setSavedOs(result),
-    //     console.log(savedOS)
-    //   } else{
-    //     console.log("else do Abertas")
-    //   }
-    // }
-
-
-
-
-
-
       function Listar(obj) {
         return(          
           <TouchableOpacity onPress={() => navigation.navigate('ModalOS',{obj: obj, token: route.params.token,manager: route.params.manager })}>
@@ -101,7 +42,6 @@ export default function ListarOsOff({route , navigation} ) {
         ;
 
 
-        // getData();
 
   return (
     <View style={styles.container}>

@@ -1,27 +1,18 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
   Text,
   View,
-  Image,
-  TextInput,
   Button,
-  TouchableOpacity,
-  FlatList,
-  ActivityIndicator
 } from "react-native";
-import * as SecureStore from 'expo-secure-store';
 import openMap from "react-native-open-maps";
 
+//essa tela exibe os detalhes da ordem de servico como teria na de papel
+//daqui o usuario pode ver a localização da OS no google maps ou caso gerente distribuir a ordem para outro funcionario
 
-
-
-//teve problema com login e cliente nulls entao eu coloquei uns ? pra resolver
-//deixando assunto e contrato como array por enquanto.
+//a fazer: melhorar o CSS para melhorar a leitura da tela
 
 export default function ModalOS({route , navigation}){
-  const [savedManager,setSavedManager] = useState("");
   var cliente = route.params.obj.cliente
   var ordem = route.params.obj.ordem_servico
   var login = route.params.obj.login

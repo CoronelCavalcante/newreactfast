@@ -4,53 +4,19 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  TextInput,
+  
   Button,
   TouchableOpacity,
   FlatList,
-  ActivityIndicator,
+ 
 } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 export default function MyOSOff({route , navigation} ) {
 
-    // const [isLoading, setLoading] = useState(true);
-    // const [OS, setOS] = useState([]);
-    const [savedLoading, setSavedLoading] = useState(true);
+   
     const savedOS = route.params.myos;
-
-    // const storeData = async (value) => {
-    //   try {
-    //     const jsonValue = JSON.stringify(value)
-    //     await AsyncStorage.setItem('@myos'+route.params.user, jsonValue)
-    //   } catch (e) {
-    //     console.log("Erro ao salver.",e)
-    //   }
-    // }
-    // const getData = async () => {
-    //   try {
-    //     const jsonValue = await AsyncStorage.getItem('@myos'+route.params.user)
-    //     if (jsonValue !== null) {
-    //       setSavedOs(JSON.parse(jsonValue))
-    //       return(setSavedLoading(false))
-    //     }
-    //     else{
-    //       return(console.log('nodata'))
-    //     }
-    //     ;
-    //   } catch(e) {
-    //     console.log("ERROR NO GET DATA: ",e)
-    //   }
-    // }
-    // useEffect(() => {getData()})
-    
-
-
-
-
       function Listar(obj) {
         return(          
           <TouchableOpacity onPress={() => navigation.navigate('ModalOS',{obj: obj, token: route.params.token })}>

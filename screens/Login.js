@@ -15,6 +15,12 @@ import { useFocusEffect } from '@react-navigation/native';
 
 
 
+//A tela login tenta acessar infos armazenadas no aparecelho para logar automaticamente caso, caso nao seja possivel
+//o login manual pode ser feito normalmente quando feito as infos de login e password sao armazenadas de fomra segura no aparelho
+
+
+
+
 export default function Login({ navigation }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -45,8 +51,6 @@ export default function Login({ navigation }) {
 
     }
     getSaved();
-    //mais facil de resolver isso é la na tela principal mesmo colocar pra chegar se tem saved email e password se tiver ja mandar pra um saved logar
-
 
     async function save(key, value){
       await SecureStore.setItemAsync(key, value)
@@ -128,7 +132,7 @@ export default function Login({ navigation }) {
         err.status = response.status
         throw err}
         return response.json()})
-    .then(result => (result.manager ? ( save("email", email),save("password", password), save("token", result.access_token), save("manager", "True") ,navigation.navigate('ManagerHome',  {token: result.access_token, email: email, password: password, manager: 'True'})) : (save("email", email),save("password", password), save("manager", "False", save("token", result)),navigation.navigate('Homescreen', {manager: 'False',token: result.access_token, email: email, password: password}))))
+    .then(result => (result.manager ? ( save("email", email),save("password", password), save("token", result.access_token), save("manager", "True") ,navigation.navigate('ManagerHome',  {token: result.access_token, email: email, password: password, manager: 'True'})) : (save("email", email),save("password", password), save("manager", "False", save("token", result.access_token)),navigation.navigate('Homescreen', {manager: 'False',token: result.access_token, email: email, password: password}))))
     .then(setEmail(""),setPassword(""))
     .catch(error => {console.log(error), error.status == 403 ? Alert.alert("Usuario ou Senha Incorreta") : (Alert.alert("Impossivel Conectar ao servidor")) });
     }
@@ -137,7 +141,6 @@ export default function Login({ navigation }) {
 
 
 
-    // <Image style={styles.image} source={require("./assets/log2.png")} />
   return (
    
     

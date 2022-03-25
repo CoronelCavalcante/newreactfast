@@ -4,18 +4,14 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  TextInput,
   Button,
   TouchableOpacity,
   FlatList,
-  ActivityIndicator,
   Alert
 } from "react-native";
 
 
-
-//supostamente nao tem problema se o cliente nao tem login mas ainda falta teste
+//essa tela monstra os detalhes do funcionario selecinado na tela ListaEmp
 export default function DetalhesEmp({route , navigation}){
   var manager = ''
   route.params.obj.manager == true ? (manager = 'Sim') : (manager = 'Nao');
@@ -29,7 +25,6 @@ export default function DetalhesEmp({route , navigation}){
       headers: myHeaders,
       redirect: 'follow'
     };
-//a navegação e alerta de ter deletao tao indo sozinhos mesmo sem esses 2 .then acho q nao precisa resolver
     fetch("http://168.195.212.5:8000/users/"+route.params.obj.id, requestOptions)
     .then(response => {response.text(),console.log(response.status) ,Alert.alert("resposta", response.status == 204 ? ("Usuario Deletado com sucesso"):(response.status==404? ("Nao encontrado"): ("Erro inesperado ao tentar deletar usuario")))})
     .then(navigation.goBack())

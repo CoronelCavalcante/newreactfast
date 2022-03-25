@@ -3,13 +3,12 @@ import * as TaskManager from 'expo-task-manager';
 
 const TASK_NAME = "MY_TASK"
 
+//ainda a ser testando parte de BACKgroundTask
+
 TaskManager.defineTask(TASK_NAME, () => {
   try {
     const receivedNewData = "My Task (Fetch): " + Math.random();
-
     console.log(receivedNewData);
-
-
     return receivedNewData ? BackgroundFetch.Result.NewData : BackgroundFetch.Result.NoData;
   } catch (error) {
       console.log(error);
